@@ -162,15 +162,6 @@ class MQTT extends eqLogic {
     unset($topicArray[$key]);
     $nodeid = (implode($topicArray,'/'));
     $value = $message->payload;
-    if ($value[0] == '{' && substr($value, -1) == '}') {
-      // payload is json
-      $nodeid = $topic;
-      $json = json_decode($value);
-      $isjson = '1';
-    } else {
-      // payload is not json
-      $isjson = '0';
-    }
 
     $elogic = self::byLogicalId($nodeid, 'MQTT');
     if (is_object($elogic)) {
@@ -189,7 +180,6 @@ class MQTT extends eqLogic {
       $elogic->save();
     }
 
-    if ($isjson == '0'){
       log::add('MQTT', 'info', 'Message texte : ' . $value . ' pour information : ' . $cmdId . ' sur : ' . $nodeid);
       $cmdlogic = MQTTCmd::byEqLogicIdAndLogicalId($elogic->getId(),$cmdId);
       if (!is_object($cmdlogic)) {
@@ -209,29 +199,35 @@ class MQTT extends eqLogic {
       $cmdlogic->setConfiguration('value', $value);
       $cmdlogic->save();
       $cmdlogic->event($value);
-    } else {
-      foreach ($json as $cmdId => $value) {
-        $topicjson = $topic . '{' . $cmdId . '}';
-        log::add('MQTT', 'info', 'Message json : ' . $value . ' pour information : ' . $cmdId . ' sur : ' . $nodeid);
-        $cmdlogic = MQTTCmd::byEqLogicIdAndLogicalId($elogic->getId(),$cmdId);
-        if (!is_object($cmdlogic)) {
-          log::add('MQTT', 'info', 'Cmdlogic n existe pas, creation');
-          $cmdlogic = new MQTTCmd();
-          $cmdlogic->setEqLogic_id($elogic->getId());
-          $cmdlogic->setEqType('MQTT');
-          $cmdlogic->setIsVisible(1);
-          $cmdlogic->setIsHistorized(0);
-          $cmdlogic->setSubType('string');
-          $cmdlogic->setLogicalId($cmdId);
-          $cmdlogic->setType('info');
-          $cmdlogic->setName( $cmdId );
-          $cmdlogic->setConfiguration('topic', $topicjson);
+
+      if ($value[0] == '{' && substr($value, -1) == '}') {
+        // payload is json
+        $nodeid = $topic;
+        $json = json_decode($value);
+        foreach ($json as $cmdId => $value) {
+          $topicjson = $topic . '{' . $cmdId . '}';
+          log::add('MQTT', 'info', 'Message json : ' . $value . ' pour information : ' . $cmdId . ' sur : ' . $nodeid);
+          $cmdlogic = MQTTCmd::byEqLogicIdAndLogicalId($elogic->getId(),$cmdId);
+          if (!is_object($cmdlogic)) {
+            log::add('MQTT', 'info', 'Cmdlogic n existe pas, creation');
+            $cmdlogic = new MQTTCmd();
+            $cmdlogic->setEqLogic_id($elogic->getId());
+            $cmdlogic->setEqType('MQTT');
+            $cmdlogic->setIsVisible(1);
+            $cmdlogic->setIsHistorized(0);
+            $cmdlogic->setSubType('string');
+            $cmdlogic->setLogicalId($cmdId);
+            $cmdlogic->setType('info');
+            $cmdlogic->setName( $cmdId );
+            $cmdlogic->setConfiguration('topic', $topicjson);
+            $cmdlogic->save();
+          }
+          $cmdlogic->setConfiguration('value', $value);
           $cmdlogic->save();
+          $cmdlogic->event($value);
         }
-        $cmdlogic->setConfiguration('value', $value);
-        $cmdlogic->save();
-        $cmdlogic->event($value);
       }
+
     }
 
 
