@@ -1,0 +1,6 @@
+[panel,primary]
+.Est-ce que ca rend Jeedom disponible comme broker MQTT ?
+--
+Non, Jeedom utilise Mosquitto en tant que broker. Si vous avez donner les droits root à Jeedom, l'installation est faite de Mosquitto et la lib PHP-Mosquitto.
+--
+

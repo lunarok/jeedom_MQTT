@@ -1,0 +1,12 @@
+==== Version 1.0
+
+Mises aux standards graphiques
+Utilisation du moteur de dépendances du core 2.0
+Possibilité d'utiliser password et user, config par défaut si non remplie pour localhost et port
+
+==== Version 0.1
+
+Première version
+
+ - Permet de récupérer automatiquement les messages d'un Mosquitto
+ - Permet de publier des messages sur Mosquitto

@@ -1,0 +1,27 @@
+==== Configuration du plugin
+
+La configuration du plugin se tient en 3 informations :
+  
+  Adresse du broker Mosquitto (peut être présent ailleurs sur le réseau)
+  
+  Port du serveur Mosquitto (1883 par défaut)
+  
+  Identifiant de Jeedom avec lequel il publiera sur le broker
+
+image::../images/MQTT1.png[Configuration]
+
+Toute sauvegarde de la configuration provoque une relance du cron du plugin (et donc un rechargement de la configuration)
+
+Ensuite les équipements se retrouvent dans la section MQTT
+
+image::../images/MQTT2.png[Configuration]
+
+Jeedom créera automatiquement toute information publier sur Mosquitto. Le dernier élément du sujet MQTT est utilisé en tant qu'identifiant d'information. Le reste constitue un équipement.
+
+  Exemple : le sujet MQTT sensors/salon2/temp deviendra un équipement sensors/salon2 et temp une information. La valeur lui sera associée.
+  
+  Si on publie ensuite sur sensors/salon2/hum l'information sera ajoutée
+
+image::../images/MQTT3.png[Configuration]
+
+Pour publier sur MQTT, il suffit d'ajouter une commande et de saisir le sujet et la valeur du message.
