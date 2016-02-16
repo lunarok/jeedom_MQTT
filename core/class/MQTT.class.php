@@ -227,11 +227,6 @@ class MQTT extends eqLogic {
           $cmdlogic->event($value);
         }
       }
-
-    }
-
-
-
   }
 
   public static function publishMosquitto( $subject, $message ) {
