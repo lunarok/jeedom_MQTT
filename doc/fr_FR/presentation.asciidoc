@@ -1,6 +1,6 @@
 ==== MQTT, un protocole de messages entre machines
 
-Ce plugin permet de se connecter à un broker Mosquitto et de récupérer les messages publiés. 
+Ce plugin permet de se connecter à un broker Mosquitto et de récupérer les messages publiés.
 
 Il permet également de publier des messages sur ce même Mosquitto.
 
@@ -13,3 +13,5 @@ Exemple :
   Node-Red : nodered.org
 
   MQTTwarn : http://jpmens.net/2014/02/17/introducing-mqttwarn-a-pluggable-mqtt-notifier/
+
+  Un post du forum qui évoque Kodi et MPD en MQTT : https://www.jeedom.com/forum/viewtopic.php?f=96&t=15298&p=281455&hilit=MQTT+MPD#p280908
