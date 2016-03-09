@@ -7,7 +7,7 @@ echo 0 > /tmp/mqtt_dep
 apt-get -y install lsb-release
 archi=`lscpu | grep Architecture | awk '{ print $2 }'`
 
-if [$archi == "x86_64"]; then
+if [ "$archi" == "x86_64" ]; then
 if [ `lsb_release -i -s` == "Debian" ]; then
   wget http://repo.mosquitto.org/debian/mosquitto-repo.gpg.key
   apt-key add mosquitto-repo.gpg.key
