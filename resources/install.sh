@@ -29,14 +29,20 @@ apt-get update
 echo 30 > /tmp/mqtt_dep
 apt-get -y install mosquitto mosquitto-clients libmosquitto-dev php5-dev
 echo 60 > /tmp/mqtt_dep
-if [ ! `cat /etc/php5/cli/php.ini | grep "mosquitto"` ]; then
+if [[ -d "/etc/php5/cli/" && ! `cat /etc/php5/cli/php.ini | grep "mosquitto"` ]]; then
 	echo "" | pecl install Mosquitto-alpha
   echo 80 > /tmp/mqtt_dep
 	echo "extension=mosquitto.so" | tee -a /etc/php5/cli/php.ini
 fi
-if [ ! `cat /etc/php5/fpm/php.ini | grep "mosquitto"` ]; then
+if [[ -d "/etc/php5/fpm/" && ! `cat /etc/php5/fpm/php.ini | grep "mosquitto"` ]]; then
 	echo "extension=mosquitto.so" | tee -a /etc/php5/fpm/php.ini
   service php5-fpm restart
+fi
+if [[ -d "/etc/php5/apache2/" && ! `cat /etc/php5/apache2/php.ini | grep "mosquitto"` ]]; then
+	echo "extension=mosquitto.so" | tee -a /etc/php5/apache2/php.ini
+  rm /tmp/mqtt_dep
+  echo "Fin installation des dépendances"
+  service apache2 restart
 fi
 
 rm /tmp/mqtt_dep

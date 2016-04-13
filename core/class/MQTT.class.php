@@ -261,7 +261,7 @@ class MQTT extends eqLogic {
     $return['log'] = 'MQTT_dep';
 
     //lib PHP exist
-    $libfpm = exec('grep "mosquitto" /etc/php5/fpm/php.ini');
+  //  $libfpm = exec('grep "mosquitto" /etc/php5/fpm/php.ini');
     $libcli = exec('grep "mosquitto" /etc/php5/cli/php.ini');
     $libphp = extension_loaded('mosquitto');
 
@@ -270,17 +270,12 @@ class MQTT extends eqLogic {
     } else if (!$libphp) {
       $return['state'] = 'ko';
       // mise en log de l'état des dép
-      if ($libfpm == 'extension=mosquitto.so') {
-        $libfpm = 'ok';
-      } else {
-        $libfpm = 'ko';
-      }
       if ($libcli == 'extension=mosquitto.so') {
         $libcli = 'ok';
       } else {
         $libcli = 'ko';
       }
-      log::add('MQTT', 'error', 'Lib FPM : ' . $libfpm . ', Lib CLI : ' . $libcli);
+      log::add('MQTT', 'error', 'Lib CLI : ' . $libcli);
     } else {
       $return['state'] = 'ok';
     }
@@ -290,7 +285,7 @@ class MQTT extends eqLogic {
   public static function dependancy_install() {
     log::add('MQTT','info','Installation des dépéndances');
     $resource_path = realpath(dirname(__FILE__) . '/../../resources');
-    passthru('sudo /bin/bash ' . $resource_path . '/install.sh ' . $resource_path . ' > ' . log::getPathToLog('MQTT_dep') . ' 2>&1 &');
+    passthru('sudo nohup /bin/bash ' . $resource_path . '/install.sh ' . $resource_path . ' > ' . log::getPathToLog('MQTT_dep') . ' 2>&1 &');
     return true;
   }
 
