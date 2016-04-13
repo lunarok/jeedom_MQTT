@@ -18,6 +18,7 @@ if [ `lsb_release -i -s` == "Debian" ]; then
     cp -r mosquitto-jessie.list /etc/apt/sources.list.d/mosquitto-jessie.list
   fi
 fi
+fi
 echo 10 > /tmp/mqtt_dep
 
 apt-get update
