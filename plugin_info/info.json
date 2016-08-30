@@ -6,5 +6,5 @@
 	"require" : "2.4",
 	"category" : "automation protocol",
   "hasDependency" : 1,
-  "hasOwnDeamon" : 1,
+  "hasOwnDeamon" : 1
 }
