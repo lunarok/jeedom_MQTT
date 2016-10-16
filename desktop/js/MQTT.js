@@ -121,7 +121,7 @@ function addCmdToTable(_cmd) {
 		tr += '<textarea class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="request" style="height : 33px;" ' + disabled + ' placeholder="{{Valeur}}"></textarea>';
 		tr +='</select></span>';
         tr += '</td><td>';
-        tr += '<span><input type="checkbox" data-size="mini" data-label-text="{{Afficher}}" class="cmdAttr bootstrapSwitch" data-l1key="isVisible" /></span>';
+        tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isVisible" checked/>{{Afficher}}</label></span> ';
         tr += '</td>';
         tr += '<td>';
         if (is_numeric(_cmd.id)) {
