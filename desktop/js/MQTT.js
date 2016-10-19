@@ -46,6 +46,14 @@ $("#table_cmd").delegate(".listEquipementAction", 'click', function() {
     });
 });
 
+$("#table_cmd").delegate(".listEquipementInfo", 'click', function () {
+    var el = $(this);
+    jeedom.cmd.getSelectModal({cmd: {type: 'info'}}, function (result) {
+        var calcul = el.closest('tr').find('.cmdAttr[data-l1key=configuration][data-l2key=' + el.data('input') + ']');
+        calcul.atCaret('insert', result.human);
+    });
+});
+
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 
 function addCmdToTable(_cmd) {
@@ -119,6 +127,7 @@ function addCmdToTable(_cmd) {
 		tr += '<textarea class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="topic" style="height : 33px;" ' + disabled + ' placeholder="{{Topic}}"></textarea><br/>';
 		tr += '</td><td>';
 		tr += '<textarea class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="request" style="height : 33px;" ' + disabled + ' placeholder="{{Valeur}}"></textarea>';
+		tr += '<a class="btn btn-default btn-sm cursor listEquipementInfo" data-input="request" style="margin-left : 5px;"><i class="fa fa-list-alt "></i> {{Rechercher équipement}}</a>';
 		tr +='</select></span>';
         tr += '</td><td>';
         tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isVisible" checked/>{{Afficher}}</label></span> ';
