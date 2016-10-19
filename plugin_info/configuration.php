@@ -47,19 +47,26 @@ if (!isConnect()) {
                 <div class="col-lg-4">
     				<input id="mosquitto_por" class="configKey form-control" data-l1key="mqttId" style="margin-top:5px" placeholder="Jeedom"/>
                 </div>
-            </div>
+        </div>
         <div class="form-group">
                 <label class="col-lg-4 control-label">{{Compte de Connexion (non obligatoire) : }}</label>
                 <div class="col-lg-4">
     				<input id="mosquitto_por" class="configKey form-control" data-l1key="mqttUser" style="margin-top:5px" placeholder="Jeedom"/>
                 </div>
-            </div>
-            <div class="form-group">
-                    <label class="col-lg-4 control-label">{{Mot de passe de Connexion (non obligatoire) : }}</label>
-                    <div class="col-lg-4">
-        				<input id="mosquitto_por" type="password" class="configKey form-control" data-l1key="mqttPass" style="margin-top:5px" placeholder="Jeedom"/>
-                    </div>
-                </div>
+         </div>
+        <div class="form-group">
+				<label class="col-lg-4 control-label">{{Mot de passe de Connexion (non obligatoire) : }}</label>
+				<div class="col-lg-4">
+					<input id="mosquitto_por" type="password" class="configKey form-control" data-l1key="mqttPass" style="margin-top:5px" placeholder="Jeedom"/>
+				</div>
+        </div>
+		        <div class="form-group">
+				<label class="col-lg-4 control-label">{{Topic root (defaut #) : }}</label>
+				<div class="col-lg-4">
+					<input id="mosquitto_por" class="configKey form-control" data-l1key="mqttTopic" style="margin-top:5px" placeholder="#"/>
+				</div>
+        </div>
+		
 
     </fieldset>
 </form>
