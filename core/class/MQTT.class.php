@@ -194,13 +194,14 @@ class MQTT extends eqLogic {
         $cmdlogic->setType('info');
         $cmdlogic->setName( $cmdId );
         $cmdlogic->setConfiguration('topic', $topic);
+		$cmdlogic->setConfiguration('parseJson', 0); //default don't parse json data
         $cmdlogic->save();
       }
       $cmdlogic->setConfiguration('value', $value);
       $cmdlogic->save();
       $cmdlogic->event($value);
 
-      if ($value[0] == '{' && substr($value, -1) == '}') {
+      if ($value[0] == '{' && substr($value, -1) == '}' && $cmdlogic->getConfiguration('parseJson') == 1) {
         // payload is json
         $nodeid = $topic;
         $json = json_decode($value);
@@ -333,6 +334,7 @@ class MQTTCmd extends cmd {
         default : $request == null ?  1 : $request;
 
       }
+	  $request = jeedom::evaluateExpression($request);
 
       $eqLogic = $this->getEqLogic();
 
