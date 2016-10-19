@@ -334,6 +334,7 @@ class MQTTCmd extends cmd {
         default : $request == null ?  1 : $request;
 
       }
+	  $request = jeedom::evaluateExpression($request);
 
       $eqLogic = $this->getEqLogic();
 
