@@ -180,7 +180,7 @@ class MQTT extends eqLogic {
       $elogic->setIsEnable(true);
       $elogic->save();
       $elogic->setStatus('lastCommunication', date('Y-m-d H:i:s'));
-      $elogic->setConfiguration('topic', $topic);
+      $elogic->setConfiguration('topic', $nodeid . '/+');
       $elogic->save();
     }
 

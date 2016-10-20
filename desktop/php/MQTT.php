@@ -155,7 +155,8 @@ $eqLogics = eqLogic::byType('MQTT');
             <div class="form-group">
               <label class="col-sm-3 control-label">{{ID du Topic}}</label>
               <div class="col-sm-3">
-                <span class="eqLogicAttr" data-l1key="configuration" data-l2key="topic"></span>
+                <!--<span class="eqLogicAttr" data-l1key="configuration" data-l2key="topic"></span>-->
+				<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="topic" placeholder="{{Nom de l'équipement MQTT}}"/>
               </div>
             </div>
 
