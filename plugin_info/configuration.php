@@ -60,8 +60,14 @@ if (!isConnect()) {
 					<input id="mosquitto_por" type="password" class="configKey form-control" data-l1key="mqttPass" style="margin-top:5px" placeholder="Jeedom"/>
 				</div>
         </div>
-		        <div class="form-group">
-				<label class="col-lg-4 control-label">{{Topic root (defaut #) : }}</label>
+		<div class="form-group">
+				<label class="col-sm-4 control-label">{{Decouverte Automatique des topics: }}</label>
+				<div class="col-sm-2">
+					<input id="mosquitto_por" type="checkbox" class="configKey autoCheck" data-l1key="mqttAuto" onchange="auto_changed()" checked /> 					
+				</div>
+        </div>
+		<div class="form-group" id="mqtt_auto">
+				<label class="col-lg-4 control-label">{{Topic root (defaut #): }}</label>
 				<div class="col-lg-4">
 					<input id="mosquitto_por" class="configKey form-control" data-l1key="mqttTopic" style="margin-top:5px" placeholder="#"/>
 				</div>
@@ -70,3 +76,13 @@ if (!isConnect()) {
 
     </fieldset>
 </form>
+ 
+<script type="text/javascript">
+function auto_changed()
+{
+    if($('.autoCheck').is(":checked"))   
+        $("#mqtt_auto").show();
+    else
+        $("#mqtt_auto").hide();
+}
+</script>
