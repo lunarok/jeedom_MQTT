@@ -45,7 +45,6 @@ class MQTT extends eqLogic {
   public function postSave() {
 	if (config::byKey('mqttAuto', 'MQTT', 0) == 0) {  // manual mode
 		if ($this->getConfiguration('reload_d') == "1") {
-			log::add('MQTT', 'debug', 'in PostSave()');
 			$cron = cron::byClassAndFunction('MQTT', 'daemon');
 			//Restarting mqtt daemon
 			if (is_object($cron) && $cron->running()) {

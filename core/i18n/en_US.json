@@ -73,7 +73,7 @@
         "Nom information": "Information name",
         "Valeur": "Value"
     },
-    "plugins\/MQTT\/plugin_info\/configuration.php": {
+    "plugins/MQTT/plugin_info/configuration.php": {
         "IP de Mosquitto : ": "Mosquitto IP: ",
 		"Port de Mosquitto : ": "Mosquitto port : ",
 		"Identifiant de Connexion : ": "Connection ID",
