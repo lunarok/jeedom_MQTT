@@ -67,14 +67,13 @@ if (!isConnect()) {
 				</div>
         </div>
 		<div class="form-group" id="mqtt_auto">
-				<label class="col-lg-4 control-label">{{Topic root (defaut #): }}</label>
+				<label class="col-lg-4 control-label">{{Topic root (defaut: Tous): }}</label>
 				<div class="col-lg-4">
 					<input id="mosquitto_por" class="configKey form-control" data-l1key="mqttTopic" style="margin-top:5px" placeholder="#"/>
 				</div>
-        </div>
-		
-
-    </fieldset>
+        </div
+    
+	</fieldset>
 </form>
  
 <script type="text/javascript">

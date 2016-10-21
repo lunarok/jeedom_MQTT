@@ -22,35 +22,53 @@ require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 
 class MQTT extends eqLogic {
   /*     * *************************Attributs****************************** */
+  
+  public function preSave() {
+	if (config::byKey('mqttAuto', 'MQTT', 0) == 0) {  // manual mode
+	    //check if some change needs reloading daemon
+		$_logicalId = $this->getLogicalId();
+		$_topic = $this->getConfiguration('topic');
+		$_wcard = $this->getConfiguration('wcard');	
+		if ($this->getConfiguration('isChild') != "1") {
+			if ($_logicalId != $_topic) {
+				$this->setLogicalId($_topic);
+				$this->setConfiguration('reload_d', '1');
+			}
+			else $this->setConfiguration('reload_d', '0');
+			if ($this->getConfiguration('wcard') != $this->getConfiguration('prev_wcard')) {
+				$this->setConfiguration('prev_wcard',$_wcard);
+				$this->setConfiguration('reload_d', '1');
+			}
+		}	
+	}	
+  }
   public function postSave() {
 	if (config::byKey('mqttAuto', 'MQTT', 0) == 0) {  // manual mode
-        $logicalId = $this->getLogicalId();
-		$topic = $this->getConfiguration('topic');
-		if ($logicalId != $topic) {
-			$this->setLogicalId($topic);
-			log::add('MQTT', 'info', 'setLogicalID: ' . $this -> getConfiguration('topic'));
-			$this->save();
+		if ($this->getConfiguration('reload_d') == "1") {
+			log::add('MQTT', 'debug', 'in PostSave()');
 			$cron = cron::byClassAndFunction('MQTT', 'daemon');
 			//Restarting mqtt daemon
 			if (is_object($cron) && $cron->running()) {
 				$cron->halt();
 				$cron->run();
 			}
-			
 		}
 	}
+	
   }
+
   
   public function postRemove() {
 	if (config::byKey('mqttAuto', 'MQTT', 0) == 0) {  // manual mode
-			$cron = cron::byClassAndFunction('MQTT', 'daemon');
-			//Restarting mqtt daemon
-			if (is_object($cron) && $cron->running()) {
-				$cron->halt();
-				$cron->run();  	 
-			}
+		$cron = cron::byClassAndFunction('MQTT', 'daemon');
+		//Restarting mqtt daemon
+		if (is_object($cron) && $cron->running()) {
+			$cron->halt();
+			$cron->run();  	 
+		}
 	}			
   }
+
   
   public static function health() {
     $return = array();
@@ -156,14 +174,21 @@ class MQTT extends eqLogic {
         
 		if (config::byKey('mqttAuto', 'MQTT', 0) == 0) {  // manual mode
 			foreach (eqLogic::byType('MQTT', true) as $mqtt) {
-				$devicetopic = $mqtt->getConfiguration('topic');
-				log::add('MQTT', 'info', 'Subscribe to topic ' . $devicetopic);
-				$client->subscribe($devicetopic, 1); // Subscribe to topic
+				if ($mqtt->getConfiguration('isChild') != "1") {
+					$devicetopic = $mqtt->getConfiguration('topic');
+					$wildcard    = $mqtt->getConfiguration('wcard');
+					if($wildcard) {
+						$fulltopic = $devicetopic . "/" . $wildcard;
+					}
+					else $fulltopic = $devicetopic;
+					log::add('MQTT', 'info', 'Subscribe to topic ' . $fulltopic);
+					$client->subscribe($fulltopic, 1); // Subscribe to topic
+				}
 			}
 		}
 		else {
 			$client->subscribe($mosqTopic, 1); // !auto: Subscribe to root topic
-			log::add('MQTT', 'info', 'Subscribe to topic ' . $mosqtopic);
+			log::add('MQTT', 'debug', 'Subscribe to topic ' . $mosqtopic);
 		}
 
         //$client->loopForever();
@@ -211,22 +236,24 @@ class MQTT extends eqLogic {
     $nodeid = (implode($topicArray,'/'));
     $value = $message->payload;
 
-    $elogic = self::byLogicalId($nodeid . '/+' , 'MQTT');
+    $elogic = self::byLogicalId($nodeid, 'MQTT');
 	
     if (is_object($elogic)) {
       $elogic->setStatus('lastCommunication', date('Y-m-d H:i:s'));
       $elogic->save();
     } else {
-      log::add('MQTT', 'info', 'Equipement n existe pas, creation');
+      
       $elogic = new MQTT();
       $elogic->setEqType_name('MQTT');
-      $elogic->setLogicalId($nodeid . '/+');
-
+      $elogic->setLogicalId($nodeid);
       $elogic->setName($nodeid);
       $elogic->setIsEnable(true);
-      $elogic->save();
       $elogic->setStatus('lastCommunication', date('Y-m-d H:i:s'));
-      $elogic->setConfiguration('topic', $nodeid . '/+');
+      $elogic->setConfiguration('topic', $nodeid);
+	  $elogic->setConfiguration('wcard', '+');
+	  $elogic->setConfiguration('isChild', '1');
+	  $elogic->setConfiguration('reload_d', '0');
+	  log::add('MQTT', 'info', 'Saving device ');
       $elogic->save();
     }
 
