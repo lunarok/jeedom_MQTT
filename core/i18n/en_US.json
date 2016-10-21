@@ -62,8 +62,7 @@
         "Historiser": "Historize",
         "Afficher": "Show",
         "Inverser": "Invert",
-        "Lifetime cache": "Lifetime cache",
-		
+        "Lifetime cache": "Lifetime cache",	
         "Rechercher équipement": "Search for device",
         "Valeur retour d\\'état": "Feedback value",
         "Durée avant retour d\\'état (min)": "Duration before feedback (min)",
@@ -81,8 +80,7 @@
 		"Compte de Connexion (non obligatoire) : ": "Login (not mandatory)",
 		"Mot de passe de Connexion (non obligatoire) : ": "Password (not mandatory) : ",
 		"Decouverte Automatique des topics: ": "Automatic topics discovery",
-		"Topic root (defaut: Tous): ": "Root topic (default: All): ",
-		
-        "Aucune": "Aucune"
+		"Topic root (defaut: Tous): ": "Root topic (default: All): ",		
+        "Aucune": "None"
     }
 }

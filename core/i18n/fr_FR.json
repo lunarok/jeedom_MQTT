@@ -77,6 +77,8 @@
 		"Identifiant de Connexion : ", "Identifiant de Connexion : ",
 		"Compte de Connexion (non obligatoire) : ": "Compte de Connexion (non obligatoire) : ",
 		"Mot de passe de Connexion (non obligatoire) : ": "ot de passe de Connexion (non obligatoire) : ",
+		"Decouverte Automatique des topics: ": "Decouverte Automatique des topics: ",
+		"Topic root (defaut: Tous): ": "Topic root (defaut: Tous): ",		
         "Aucune": "Aucune"
     }
 }
