@@ -249,6 +249,7 @@ class MQTT extends eqLogic {
       $elogic->setName($nodeid);
       $elogic->setIsEnable(true);
       $elogic->setStatus('lastCommunication', date('Y-m-d H:i:s'));
+
       $elogic->setConfiguration('topic', $nodeid);
 	  $elogic->setConfiguration('wcard', '+');
 	  $elogic->setConfiguration('isChild', '1');
