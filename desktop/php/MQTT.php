@@ -48,7 +48,7 @@ $eqLogics = eqLogic::byType('MQTT');
         <center>
           <i class="fa fa-plus-circle" style="font-size : 7em;color:#00979c;"></i>
         </center>
-        <span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;"><center>Ajouter</center></span>
+        <span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;"><center>{{Ajouter}}</center></span>
       </div>
       <?php
       $dir = dirname(__FILE__) . '/../../doc/images/';
@@ -136,13 +136,13 @@ $eqLogics = eqLogic::byType('MQTT');
             <div class="form-group expertModeVisible">
               <label class="col-sm-3 control-label">{{Délai max entre 2 messages}}</label>
               <div class="col-sm-3">
-                <input class="eqLogicAttr form-control" data-l1key="timeout" placeholder="Délai maximum autorisé entre 2 messages (en mn)"/>
+                <input class="eqLogicAttr form-control" data-l1key="timeout" placeholder="{{Délai maximum autorisé entre 2 messages (en mn)}}"/>
               </div>
             </div>
             <div class="form-group expertModeVisible">
               <label class="col-sm-3 control-label">{{Type de piles}}</label>
               <div class="col-sm-3">
-                <input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="battery_type" placeholder="Doit être indiqué sous la forme : 3xAA"/>
+                <input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="battery_type" placeholder="{{Doit être indiqué sous la forme : 3xAA}}"/>
               </div>
             </div>
             <div class="form-group">
@@ -155,24 +155,37 @@ $eqLogics = eqLogic::byType('MQTT');
             <div class="form-group">
               <label class="col-sm-3 control-label">{{Inscrit au Topic}}</label>
               <div class="col-sm-3">
-                <!--<span class="eqLogicAttr" data-l1key="configuration" data-l2key="topic"></span>-->
 				
 				<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="topic" placeholder="{{Topic principal de l'équipement MQTT}}"/>
+              </div>
+            </div>
+			
+			<div class="form-group">
+              <label class="col-sm-3 control-label">{{Qos}}</label>
+              <div id="mqttqos" class="col-sm-3">
+				<select style="width : 40pxpx;" class="eqLogicAttr form-control input-sm" data-l1key="configuration" data-l2key="Qos">
+					<option value="0">0</option>
+					<option value="1" selected>1</option>
+					<option value="2">2</option>
+
+
+				</select>
               </div>
             </div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">{{Topic Enfant}}</label>
 				<div class="col-sm-8">	
-					<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="isChild" disabled readonly /></label>
+					<label class="checkbox-inline"><input id="isChild" type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="isChild" disabled readonly /></label>
 				</div>
 			</div>
             
 			<div class="form-group ">
 				<label class="col-sm-3 control-label">{{Profondeur du Topic: }}</label>
-					<div class="col-sm-3">
+					<div id="mqttdepth" class="col-sm-3">
 						<select style="width : 140pxpx;" class="eqLogicAttr form-control input-sm" data-l1key="configuration" data-l2key="wcard">
-							<option value="+">{{Ce topic seulement (+)}}</option>
+							<option value="+" selected>{{Ce topic seulement (+)}}</option>
 							<option value="#">{{Tout les sous-topics} (#)}}</option>
+							
 						</select>
 					</div>
 				</label>
