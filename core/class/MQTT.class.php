@@ -144,6 +144,7 @@ class MQTT extends eqLogic {
     $mosqPort = config::byKey('mqttPort', 'MQTT', 0);
     $mosqId = config::byKey('mqttId', 'MQTT', 0);
 	$mosqTopic = config::byKey('mqttTopic', 'MQTT', 0);
+	$mosqQos = config::byKey('mqttQos', 'MQTT', 0);
 	
     if ($mosqHost == '') {
       $mosqHost = '127.0.0.1';
@@ -154,9 +155,12 @@ class MQTT extends eqLogic {
     if ($mosqId == '') {
       $mosqId = 'Jeedom';
     }
-	if ($mosqTopic == '') {
+	if ($mosqTopic == '' || !$mosTopic) {
       $mosqTopic = '#';
     }
+	if ($mosqQos == '' || !$mosqQos) {
+		$mosqQos = 1; // default Qos 1
+	}
     //$mosqAuth = config::byKey('mqttAuth', 'MQTT', 0);
     $mosqUser = config::byKey('mqttUser', 'MQTT', 0);
     $mosqPass = config::byKey('mqttPass', 'MQTT', 0);
@@ -204,7 +208,7 @@ class MQTT extends eqLogic {
 			}
 		}
 		else {
-			$client->subscribe($mosqTopic, 1); // !auto: Subscribe to root topic
+			$client->subscribe($mosqTopic, $mosqQos); // !auto: Subscribe to root topic
 			log::add('MQTT', 'debug', 'Subscribe to topic ' . $mosqtopic);
 		}
 
