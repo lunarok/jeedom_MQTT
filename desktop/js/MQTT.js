@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
-
+		
 $("#bt_addMQTTInfo").on('click', function(event) {
     var _cmd = {type: 'info'};
     addCmdToTable(_cmd);
@@ -132,6 +132,7 @@ function addCmdToTable(_cmd) {
 		tr +='</select></span>';
         tr += '</td><td>';
         tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isVisible" checked/>{{Afficher}}</label></span> ';
+		tr += '<span><input class="tooltips cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="Qos" placeholder="{{Qos}}" title="{{Qos}}" style="width : 40%;display : inline-block;"></span> ';
         tr += '</td>';
         tr += '<td>';
         if (is_numeric(_cmd.id)) {
@@ -144,18 +145,18 @@ function addCmdToTable(_cmd) {
         $('#table_cmd tbody').append(tr);
         //$('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');
         var tr = $('#table_cmd tbody tr:last');
- 	jeedom.eqLogic.builSelectCmd({
-	id: $(".li_eqLogic.active").attr('data-eqLogic_id'),
-	filter: {type: 'info'},
-	error: function (error) {
-		$('#div_alert').showAlert({message: error.message, level: 'danger'});
-	},
-	success: function (result) {
-		tr.find('.cmdAttr[data-l1key=value]').append(result);
-		tr.setValues(_cmd, '.cmdAttr');
-		jeedom.cmd.changeType(tr, init(_cmd.subType));
+		jeedom.eqLogic.builSelectCmd({
+			id: $(".li_eqLogic.active").attr('data-eqLogic_id'),
+			filter: {type: 'info'},
+			error: function (error) {
+				$('#div_alert').showAlert({message: error.message, level: 'danger'});
+			},
+			success: function (result) {
+				tr.find('.cmdAttr[data-l1key=value]').append(result);
+				tr.setValues(_cmd, '.cmdAttr');
+				jeedom.cmd.changeType(tr, init(_cmd.subType));
+			}
+		});
 	}
-	});
-
-    }
 }
+

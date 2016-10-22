@@ -1,6 +1,7 @@
 {
     "plugins/MQTT/desktop/php/MQTT.php": {
         "Ajouter un équipement": "Add device",
+		"Ajouter un équipement": "Add",
         "Configuration": "Setup",
         "Santé": "Health",
         "Mes MQTT": "My MQTT",
@@ -20,7 +21,7 @@
         "Aucun": "None",    
         "Commentaire": "Comment",
 		"Type de piles": "Battery type",
-	    "Doit être indiqué sous la forme : 3xAA", "Needs to be set like: 3xAA",
+	    "Doit être indiqué sous la forme : 3xAA": "Needs to be set like: 3xAA",
         "Virtuel": "Virtual",
 		"Inscrit au Topic": "Subscribe to Topic",
 		"Topic principal de l'équipement MQTT": "MQTT device main Topic",

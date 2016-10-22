@@ -29,14 +29,30 @@ class MQTT extends eqLogic {
 		$_logicalId = $this->getLogicalId();
 		$_topic = $this->getConfiguration('topic');
 		$_wcard = $this->getConfiguration('wcard');	
+		$_qos = $this->getConfiguration('Qos');	
 		if ($this->getConfiguration('isChild') != "1") {
 			if ($_logicalId != $_topic) {
 				$this->setLogicalId($_topic);
 				$this->setConfiguration('reload_d', '1');
 			}
 			else $this->setConfiguration('reload_d', '0');
+			
 			if ($this->getConfiguration('wcard') != $this->getConfiguration('prev_wcard')) {
 				$this->setConfiguration('prev_wcard',$_wcard);
+				$this->setConfiguration('reload_d', '1');
+			}
+			if(!$this->getConfiguration('wcard') ) {
+				$this->setConfiguration('wcard','+'); 
+				$this->setConfiguration('prev_wcard','+');
+				$this->setConfiguration('reload_d', '1');
+			}
+			if ($this->getConfiguration('Qos') != $this->getConfiguration('prev_Qos')) {
+				$this->setConfiguration('prev_Qos',$_qos);
+				$this->setConfiguration('reload_d', '1');
+			}
+			if(!$this->getConfiguration('Qos') ) {
+				$this->setConfiguration('Qos','+'); 
+				$this->setConfiguration('prev_Qos','+');
 				$this->setConfiguration('reload_d', '1');
 			}
 		}	
@@ -128,6 +144,7 @@ class MQTT extends eqLogic {
     $mosqPort = config::byKey('mqttPort', 'MQTT', 0);
     $mosqId = config::byKey('mqttId', 'MQTT', 0);
 	$mosqTopic = config::byKey('mqttTopic', 'MQTT', 0);
+	$mosqQos = config::byKey('mqttQos', 'MQTT', 0);
 	
     if ($mosqHost == '') {
       $mosqHost = '127.0.0.1';
@@ -138,9 +155,12 @@ class MQTT extends eqLogic {
     if ($mosqId == '') {
       $mosqId = 'Jeedom';
     }
-	if ($mosqTopic == '') {
+	if ($mosqTopic == '' || !$mosTopic) {
       $mosqTopic = '#';
     }
+	if ($mosqQos == '' || !$mosqQos) {
+		$mosqQos = 1; // default Qos 1
+	}
     //$mosqAuth = config::byKey('mqttAuth', 'MQTT', 0);
     $mosqUser = config::byKey('mqttUser', 'MQTT', 0);
     $mosqPass = config::byKey('mqttPass', 'MQTT', 0);
@@ -176,17 +196,19 @@ class MQTT extends eqLogic {
 				if ($mqtt->getConfiguration('isChild') != "1") {
 					$devicetopic = $mqtt->getConfiguration('topic');
 					$wildcard    = $mqtt->getConfiguration('wcard');
+					$qos         = (int)$mqtt->getConfiguration('Qos');
+					if (!$qos) $qos = 1;
 					if($wildcard) {
 						$fulltopic = $devicetopic . "/" . $wildcard;
 					}
 					else $fulltopic = $devicetopic;
 					log::add('MQTT', 'info', 'Subscribe to topic ' . $fulltopic);
-					$client->subscribe($fulltopic, 1); // Subscribe to topic
+					$client->subscribe($fulltopic, $qos); // Subscribe to topic
 				}
 			}
 		}
 		else {
-			$client->subscribe($mosqTopic, 1); // !auto: Subscribe to root topic
+			$client->subscribe($mosqTopic, $mosqQos); // !auto: Subscribe to root topic
 			log::add('MQTT', 'debug', 'Subscribe to topic ' . $mosqtopic);
 		}
 
@@ -248,9 +270,11 @@ class MQTT extends eqLogic {
       $elogic->setName($nodeid);
       $elogic->setIsEnable(true);
       $elogic->setStatus('lastCommunication', date('Y-m-d H:i:s'));
-
       $elogic->setConfiguration('topic', $nodeid);
 	  $elogic->setConfiguration('wcard', '+');
+	  $elogic->setConfiguration('prev_wcard', '+');
+	  $elogic->setConfiguration('Qos', '1');
+	  $elogic->setConfiguration('prev_Qos', '1');
 	  $elogic->setConfiguration('isChild', '1');
 	  $elogic->setConfiguration('reload_d', '0');
 	  log::add('MQTT', 'info', 'Saving device ');
@@ -307,7 +331,7 @@ class MQTT extends eqLogic {
       }
   }
 
-  public static function publishMosquitto( $subject, $message ) {
+  public static function publishMosquitto( $subject, $message, $qos ) {
     log::add('MQTT', 'debug', 'Envoi du message ' . $message . ' vers ' . $subject);
     $mosqHost = config::byKey('mqttAdress', 'MQTT', 0);
     $mosqPort = config::byKey('mqttPort', 'MQTT', 0);
@@ -329,7 +353,11 @@ class MQTT extends eqLogic {
       $publish->setCredentials($mosqUser, $mosqPass);
     }
     $publish->connect($mosqHost, $mosqPort, 60);
-    $publish->publish($subject, $message, 1, false);
+    $publish->publish($subject, $message, $qos);
+	for ($i = 0; $i < 100; $i++) {
+    // Loop around to permit the library to do its work
+    $publish->loop(1);
+	}
     $publish->disconnect();
     unset($publish);
   }
@@ -385,6 +413,8 @@ class MQTTCmd extends cmd {
       case 'action' :
       $request = $this->getConfiguration('request');
       $topic = $this->getConfiguration('topic');
+	  $qos = $this->getConfiguration('Qos');
+	  if ($qos == NULL) $qos = 1; //default to 1
 
       switch ($this->getSubType()) {
         case 'slider':
@@ -417,7 +447,8 @@ class MQTTCmd extends cmd {
 
       MQTT::publishMosquitto(
       $topic ,
-      $request );
+      $request ,
+	  $qos );
 
       $result = $request;
 

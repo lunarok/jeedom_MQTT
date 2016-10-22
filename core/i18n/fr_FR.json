@@ -1,6 +1,7 @@
 {
     "plugins\/MQTT\/desktop\/php\/MQTT.php": {
         "Ajouter un équipement": "Ajouter un équipement",
+		"Ajouter": "Ajouter",
         "Configuration": "Configuration",
         "Santé": "Santé",
         "Mes MQTT": "Mes MQTT",
@@ -74,9 +75,9 @@
     "plugins\/MQTT\/plugin_info\/configuration.php": {
         "IP de Mosquitto : ": "IP de Mosquitto : ",
 		"Port de Mosquitto : ": "Port de Mosquitto : ",
-		"Identifiant de Connexion : ", "Identifiant de Connexion : ",
+		"Identifiant de Connexion : ": "Identifiant de Connexion : ",
 		"Compte de Connexion (non obligatoire) : ": "Compte de Connexion (non obligatoire) : ",
-		"Mot de passe de Connexion (non obligatoire) : ": "ot de passe de Connexion (non obligatoire) : ",
+		"Mot de passe de Connexion (non obligatoire) : ": "Mot de passe de Connexion (non obligatoire) : ",
 		"Decouverte Automatique des topics: ": "Decouverte Automatique des topics: ",
 		"Topic root (defaut: Tous): ": "Topic root (defaut: Tous): ",		
         "Aucune": "Aucune"
