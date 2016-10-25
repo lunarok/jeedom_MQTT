@@ -443,11 +443,11 @@ class MQTTCmd extends cmd {
       }
 	  //check if result needs to be inverted
 	  $invert = false;
-	  if (0 === strpos($request, 'not(')) {
+	  if (0 === strpos($request, 'not(#')) {
 		  
 		  $invert = true;
-		  $request = str_replace('not(', '', $request);
-		  $request = str_replace(')', '', $request);
+		  $request = str_replace('not(#', '#', $request);
+		  $request = str_replace('#)', '#', $request);
 	  }
 
 	  $request = jeedom::evaluateExpression($request);
