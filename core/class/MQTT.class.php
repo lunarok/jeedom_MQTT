@@ -371,7 +371,7 @@ class MQTT extends eqLogic {
     if ($output[0] != "" && $libphp) {
       $return['state'] = 'ok';
     }
-    log::add('MQTT', 'debug', 'Lib : ' . $libphp);
+    log::add('MQTT', 'debug', 'Lib : ' . print_r(get_loaded_extensions()));
 
     return $return;
   }
