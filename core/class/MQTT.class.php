@@ -15,34 +15,30 @@
 * You should have received a copy of the GNU General Public License
 * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
 */
-
-/* * ***************************Includes********************************* */
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 
-
 class MQTT extends eqLogic {
-  /*     * *************************Attributs****************************** */
-  
+
   public function preSave() {
 	if (config::byKey('mqttAuto', 'MQTT', 0) == 0) {  // manual mode
 	    //check if some change needs reloading daemon
 		$_logicalId = $this->getLogicalId();
 		$_topic = $this->getConfiguration('topic');
-		$_wcard = $this->getConfiguration('wcard');	
-		$_qos = $this->getConfiguration('Qos');	
+		$_wcard = $this->getConfiguration('wcard');
+		$_qos = $this->getConfiguration('Qos');
 		if ($this->getConfiguration('isChild') != "1") {
 			if ($_logicalId != $_topic) {
 				$this->setLogicalId($_topic);
 				$this->setConfiguration('reload_d', '1');
 			}
 			else $this->setConfiguration('reload_d', '0');
-			
+
 			if ($this->getConfiguration('wcard') != $this->getConfiguration('prev_wcard')) {
 				$this->setConfiguration('prev_wcard',$_wcard);
 				$this->setConfiguration('reload_d', '1');
 			}
 			if(!$this->getConfiguration('wcard') ) {
-				$this->setConfiguration('wcard','+'); 
+				$this->setConfiguration('wcard','+');
 				$this->setConfiguration('prev_wcard','+');
 				$this->setConfiguration('reload_d', '1');
 			}
@@ -51,12 +47,12 @@ class MQTT extends eqLogic {
 				$this->setConfiguration('reload_d', '1');
 			}
 			if(!$this->getConfiguration('Qos') ) {
-				$this->setConfiguration('Qos','+'); 
+				$this->setConfiguration('Qos','+');
 				$this->setConfiguration('prev_Qos','+');
 				$this->setConfiguration('reload_d', '1');
 			}
-		}	
-	}	
+		}
+	}
   }
   public function postSave() {
 	if (config::byKey('mqttAuto', 'MQTT', 0) == 0) {  // manual mode
@@ -69,22 +65,22 @@ class MQTT extends eqLogic {
 			}
 		}
 	}
-	
+
   }
 
-  
+
   public function postRemove() {
 	if (config::byKey('mqttAuto', 'MQTT', 0) == 0) {  // manual mode
 		$cron = cron::byClassAndFunction('MQTT', 'daemon');
 		//Restarting mqtt daemon
 		if (is_object($cron) && $cron->running()) {
 			$cron->halt();
-			$cron->run();  	 
+			$cron->run();
 		}
-	}			
+	}
   }
 
-  
+
   public static function health() {
     $return = array();
     $mosqHost = config::byKey('mqttAdress', 'MQTT', 0);
@@ -145,7 +141,7 @@ class MQTT extends eqLogic {
     $mosqId = config::byKey('mqttId', 'MQTT', 0);
 	$mosqTopic = config::byKey('mqttTopic', 'MQTT', 0);
 	$mosqQos = config::byKey('mqttQos', 'MQTT', 0);
-	
+
     if ($mosqHost == '') {
       $mosqHost = '127.0.0.1';
     }
@@ -190,7 +186,7 @@ class MQTT extends eqLogic {
           $client->setCredentials($mosqUser, $mosqPass);
         }
         $client->connect($mosqHost, $mosqPort, 60);
-        
+
 		if (config::byKey('mqttAuto', 'MQTT', 0) == 0) {  // manual mode
 			foreach (eqLogic::byType('MQTT', true) as $mqtt) {
 				if ($mqtt->getConfiguration('isChild') != "1") {
@@ -258,12 +254,12 @@ class MQTT extends eqLogic {
     $value = $message->payload;
 
     $elogic = self::byLogicalId($nodeid, 'MQTT');
-	
+
     if (is_object($elogic)) {
       $elogic->setStatus('lastCommunication', date('Y-m-d H:i:s'));
       $elogic->save();
     } else {
-      
+
       $elogic = new MQTT();
       $elogic->setEqType_name('MQTT');
       $elogic->setLogicalId($nodeid);
@@ -365,47 +361,33 @@ class MQTT extends eqLogic {
   public static function dependancy_info() {
     $return = array();
     $return['log'] = 'MQTT_dep';
+    $return['state'] = 'nok';
 
+    $cmd = "dpkg -l | grep mosquitto";
+    exec($cmd, $output, $return_var);
     //lib PHP exist
-  //  $libfpm = exec('grep "mosquitto" /etc/php5/fpm/php.ini');
-    $libcli = exec('grep "mosquitto" /etc/php5/cli/php.ini');
     $libphp = extension_loaded('mosquitto');
 
-    if (file_exists('/tmp/mqtt_dep')) {
-      $return['state'] = 'in_progress';
-    } else if (!$libphp) {
-      $return['state'] = 'ko';
-      // mise en log de l'état des dép
-      if ($libcli == 'extension=mosquitto.so') {
-        $libcli = 'ok';
-      } else {
-        $libcli = 'ko';
-      }
-      log::add('MQTT', 'error', 'Lib CLI : ' . $libcli);
-    } else {
+    if ($output[0] != "" && $libphp) {
       $return['state'] = 'ok';
     }
+    log::add('MQTT', 'debug', 'Lib : ' . $libphp);
+
     return $return;
   }
 
   public static function dependancy_install() {
     log::add('MQTT','info','Installation des dépéndances');
     $resource_path = realpath(dirname(__FILE__) . '/../../resources');
-    passthru('sudo nohup /bin/bash ' . $resource_path . '/install.sh ' . $resource_path . ' > ' . log::getPathToLog('MQTT_dep') . ' 2>&1 &');
+    passthru('sudo /bin/bash ' . $resource_path . '/install.sh ' . $resource_path . ' > ' . log::getPathToLog('MQTT_dep') . ' 2>&1 &');
     return true;
   }
 
 }
 
-
-
 class MQTTCmd extends cmd {
-
   public function execute($_options = null) {
-
-
     switch ($this->getType()) {
-
       case 'info' :
       return $this->getConfiguration('value');
       break;
@@ -442,7 +424,6 @@ class MQTTCmd extends cmd {
 
       }
 	  $request = jeedom::evaluateExpression($request);
-
       $eqLogic = $this->getEqLogic();
 
       MQTT::publishMosquitto(
@@ -451,13 +432,8 @@ class MQTTCmd extends cmd {
 	  $qos );
 
       $result = $request;
-
-
       return $result;
     }
-
     return true;
-
   }
-
 }
