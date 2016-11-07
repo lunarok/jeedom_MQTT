@@ -7,11 +7,3 @@ Il permet également de publier des messages sur ce même Mosquitto.
 MQTT est un protocole standard de communication sur IP. Il est disponible sur les Arduino et ESP8266 mais également utilisé par les plus grosses structures (architectures de messagerie entre applications MQSeries, RabbitMQ ...)
 
 Les produits capables de parler en MQTT sont ainsi connectés à Jeedom.
-
-Exemple :
-
-  Node-Red : nodered.org
-
-  MQTTwarn : http://jpmens.net/2014/02/17/introducing-mqttwarn-a-pluggable-mqtt-notifier/
-
-  Un post du forum qui évoque Kodi et MPD en MQTT : https://www.jeedom.com/forum/viewtopic.php?f=96&t=15298&p=281455&hilit=MQTT+MPD#p280908

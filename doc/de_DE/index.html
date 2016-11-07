@@ -423,10 +423,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_konfiguration">2. Konfiguration</a>
 <ul class="sectlevel3">
 <li><a href="#_configuration_du_plugin">2.1. Configuration du plugin</a></li>
+<li><a href="#_installation_avec_php7">2.2. Installation avec PHP7</a></li>
 </ul>
 </li>
 <li><a href="#_faq">3. FAQ</a></li>
-<li><a href="#_fehlersuche">4. Fehlersuche</a></li>
 </ul>
 </div>
 </div>
@@ -447,24 +447,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="paragraph">
 <p>Les produits capables de parler en MQTT sont ainsi connectés à Jeedom.</p>
-</div>
-<div class="paragraph">
-<p>Exemple :</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>Node-Red : nodered.org</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>MQTTwarn : http://jpmens.net/2014/02/17/introducing-mqttwarn-a-pluggable-mqtt-notifier/</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>Un post du forum qui évoque Kodi et MPD en MQTT : https://www.jeedom.com/forum/viewtopic.php?f=96&amp;t=15298&amp;p=281455&amp;hilit=MQTT+MPD#p280908</pre>
-</div>
 </div>
 <hr>
 </div>
@@ -555,6 +537,45 @@ La sélection du wildcard ("Profondeur du Topic") permet de décider si le pugin
 <div class="paragraph">
 <p>Pour publier sur MQTT, il suffit d&#8217;ajouter une commande et de saisir le sujet et la valeur du message.</p>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_installation_avec_php7">2.2. Installation avec PHP7</h4>
+<div class="paragraph">
+<p>Actuellement la librairie n&#8217;est pas disponible dans les dépots PECL, pour l&#8217;installer il faut suivre cette procédure :</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>git clone https://github.com/mgdm/Mosquitto-PHP</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd Mosquitto-PHP</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>phpize7.0</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>./configure --with-mosquitto=/path/to/libmosquitto</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>make</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>make install</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Il faut ensuite ajouter extension="mosquitto.so" dans le php.ini nécessaire</p>
+</div>
 <hr>
 </div>
 </div>
@@ -584,12 +605,6 @@ La sélection du wildcard ("Profondeur du Topic") permet de décider si le pugin
 </div>
 </div>
 </div>
-<hr>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_fehlersuche">4. Fehlersuche</h2>
-<div class="sectionbody">
 <div class="openblock panel">
 <div class="title">Mosquitto n&#8217;est pas installé sur mon système</div><div class="content">
 <div class="paragraph">

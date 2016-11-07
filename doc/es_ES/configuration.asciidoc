@@ -8,7 +8,7 @@ La configuration du plugin se tient en 5 informations :
 
   Identifiant de Jeedom avec lequel il publiera sur le broker
   Il est possible d'ajouter un compte et mot de passe si la connexion le requiert.
-  
+
   Topic parent à partir duquel le plugin va ajouter les sous topics en mode automatique (défaut #)
 
   Mode Automatique ou Manuel.
@@ -39,3 +39,21 @@ Si le payload est de type json et que "parseJson' est coché, alors un équipeme
 image::../images/MQTT3.png[Configuration]
 
 Pour publier sur MQTT, il suffit d'ajouter une commande et de saisir le sujet et la valeur du message.
+
+==== Installation avec PHP7
+
+Actuellement la librairie n'est pas disponible dans les dépots PECL, pour l'installer il faut suivre cette procédure :
+
+    git clone https://github.com/mgdm/Mosquitto-PHP
+
+    cd Mosquitto-PHP
+
+    phpize7.0
+
+    ./configure --with-mosquitto=/path/to/libmosquitto
+
+    make
+
+    make install
+
+Il faut ensuite ajouter extension="mosquitto.so" dans le php.ini nécessaire
