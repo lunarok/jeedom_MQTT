@@ -327,7 +327,7 @@ class MQTT extends eqLogic {
       }
   }
 
-  public static function publishMosquitto( $subject, $message, $qos ) {
+  public static function publishMosquitto( $subject, $message, $qos , $retain) {
     log::add('MQTT', 'debug', 'Envoi du message ' . $message . ' vers ' . $subject);
     $mosqHost = config::byKey('mqttAdress', 'MQTT', 0);
     $mosqPort = config::byKey('mqttPort', 'MQTT', 0);
@@ -349,7 +349,7 @@ class MQTT extends eqLogic {
       $publish->setCredentials($mosqUser, $mosqPass);
     }
     $publish->connect($mosqHost, $mosqPort, 60);
-    $publish->publish($subject, $message, $qos);
+    $publish->publish($subject, $message, $qos, $retain);
 	for ($i = 0; $i < 100; $i++) {
     // Loop around to permit the library to do its work
     $publish->loop(1);
@@ -396,6 +396,9 @@ class MQTTCmd extends cmd {
       $request = $this->getConfiguration('request');
       $topic = $this->getConfiguration('topic');
 	  $qos = $this->getConfiguration('Qos');
+	  if ($this->getConfiguration('retain') == 0) $retain = false;
+	  else $retain = true;
+	  
 	  if ($qos == NULL) $qos = 1; //default to 1
 
       switch ($this->getSubType()) {
@@ -429,7 +432,8 @@ class MQTTCmd extends cmd {
       MQTT::publishMosquitto(
       $topic ,
       $request ,
-	  $qos );
+	  $qos,
+	  $retain );
 
       $result = $request;
       return $result;
