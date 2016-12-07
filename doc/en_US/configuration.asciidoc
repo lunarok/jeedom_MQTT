@@ -1,4 +1,4 @@
-==== Configuration du plugin
+==== The plugin configuration
 
 La configuration du plugin se tient en 5 informations :
 
