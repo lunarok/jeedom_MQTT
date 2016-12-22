@@ -1,6 +1,6 @@
 ==== MQTT, un protocole de messages entre machines
 
-Ce plugin permet de se connecter à un broker Mosquitto et de récupérer les messages publiés.
+This plugin allows to connect to a Mosquitto broker and retrieve published messages.
 
 Il permet également de publier des messages sur ce même Mosquitto.
 
