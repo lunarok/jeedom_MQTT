@@ -1,6 +1,6 @@
 ==== The plugin configuration
 
-La configuration du plugin se tient en 5 informations :
+The plugin configuration is only 5 informations :
 
   Adresse du broker Mosquitto (peut être présent ailleurs sur le réseau)
 
