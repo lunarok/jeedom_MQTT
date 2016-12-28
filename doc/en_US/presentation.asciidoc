@@ -1,4 +1,4 @@
-==== MQTT, un protocole de messages entre machines
+==== MQTT, a protocol of messages between machines
 
 This plugin allows to connect to a Mosquitto broker and retrieve published messages.
 
