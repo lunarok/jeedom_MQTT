@@ -1,4 +1,4 @@
-==== Configuration du plugin
+==== Plugin Konfiguration
 
 La configuration du plugin se tient en 5 informations :
 
@@ -40,7 +40,7 @@ image::../images/MQTT3.png[Configuration]
 
 Pour publier sur MQTT, il suffit d'ajouter une commande et de saisir le sujet et la valeur du message.
 
-==== Installation avec PHP7
+==== Installation von PHP7
 
 Actuellement la librairie n'est pas disponible dans les dépots PECL, pour l'installer il faut suivre cette procédure :
 
