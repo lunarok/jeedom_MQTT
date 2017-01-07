@@ -25,7 +25,7 @@
         "Topic Enfant": "Topic Enfant",
         "Profondeur du Topic: ": "Tiefe der Themen : ",
         "Ce topic seulement (+)": "Ce topic seulement (+)",
-        "Tout les sous-topics} (#)": "Tout les sous-topics} (#)",
+        "Tout les sous-topics} (#)": "Alle Unterthemen} (#)",
         "Dernière Activité": "Letzte Aktivität",
         "Aucun": "Keine",
         "Baromètre": "Barometer",
@@ -94,7 +94,7 @@
     "plugins\/MQTT\/plugin_info\/configuration.php": {
         "IP de Mosquitto : ": "Mosquitto IP :",
         "Port de Mosquitto : ": "Mosquitto Port :",
-        "Identifiant de Connexion : ": "Identifiant de Connexion : ",
+        "Identifiant de Connexion : ": "Benutzer-ID",
         "Compte de Connexion (non obligatoire) : ": "Compte de Connexion (non obligatoire) : ",
         "Mot de passe de Connexion (non obligatoire) : ": "Mot de passe de Connexion (non obligatoire) : ",
         "Decouverte Automatique des topics: ": "Decouverte Automatique des topics: ",
