@@ -95,9 +95,9 @@
         "IP de Mosquitto : ": "Mosquitto IP :",
         "Port de Mosquitto : ": "Mosquitto Port :",
         "Identifiant de Connexion : ": "Benutzer-ID",
-        "Compte de Connexion (non obligatoire) : ": "Compte de Connexion (non obligatoire) : ",
-        "Mot de passe de Connexion (non obligatoire) : ": "Mot de passe de Connexion (non obligatoire) : ",
-        "Decouverte Automatique des topics: ": "Decouverte Automatique des topics: ",
+        "Compte de Connexion (non obligatoire) : ": "Konto Login (nicht erforderlich) :",
+        "Mot de passe de Connexion (non obligatoire) : ": "Login-Passwort (nicht erforderlich) :",
+        "Decouverte Automatique des topics: ": "Automatische Erkennung der Themen :",
         "Topic root (defaut: Tous): ": "root Thema (Standart: alle) :",
         "Aucune": "Keine",
         "Qos": "Qos"
