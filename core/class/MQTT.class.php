@@ -232,7 +232,7 @@ class MQTT extends eqLogic {
     log::add('MQTT', 'debug', 'Message ' . $message->payload . ' sur ' . $message->topic);
     $topic = $message->topic;
 
-    if(!ctype_print($message->topic) || empty($message->topic)) {
+    if(!ctype_print($topic) || empty($topic)) {
       log::add('MQTT', 'debug', 'Message skipped : "'.$message->topic.'" is not a valid topic');
       return;
     }
