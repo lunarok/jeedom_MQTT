@@ -4,7 +4,7 @@ echo "Début d'installation des dépendances"
 
 touch /tmp/mqtt_dep
 echo 0 > /tmp/mqtt_dep
-apt-get -y install lsb-release
+apt-get -y install lsb-release php-pear
 archi=`lscpu | grep Architecture | awk '{ print $2 }'`
 
 if [ "$archi" == "x86_64" ]; then
