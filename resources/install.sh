@@ -31,7 +31,7 @@ echo 30 > /tmp/mqtt_dep
 apt-get -y install mosquitto mosquitto-clients libmosquitto-dev
 echo 60 > /tmp/mqtt_dep
 
-if [`dpkg -l | grep php5 | wc -l` == '0']; then
+if [`dpkg -l | grep php5 | wc -l` == "0"]; then
   apt-get -y install php5-dev
   if [[ -d "/etc/php5/cli/" && ! `cat /etc/php5/cli/php.ini | grep "mosquitto"` ]]; then
   	echo "" | pecl install Mosquitto-alpha
