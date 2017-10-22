@@ -20,7 +20,7 @@ if [ `lsb_release -i -s` == "Debian" ]; then
   if [ `lsb_release -c -s` == "stretch" ]; then
     wget http://repo.mosquitto.org/debian/mosquitto-stretch.list
     rm /etc/apt/sources.list.d/mosquitto-stretch.list
-    cp -r mosquitto-jessie.list /etc/apt/sources.list.d/mosquitto-stretch.list
+    cp -r mosquitto-stretch.list /etc/apt/sources.list.d/mosquitto-stretch.list
   fi
 fi
 fi
@@ -31,7 +31,7 @@ echo 30 > /tmp/mqtt_dep
 apt-get -y install mosquitto mosquitto-clients libmosquitto-dev
 echo 60 > /tmp/mqtt_dep
 
-if [`dpkg -l | grep php5 | wc -l` != '0']; then
+if [`dpkg -l | grep php5 | wc -l` == '0']; then
   apt-get -y install php5-dev
   if [[ -d "/etc/php5/cli/" && ! `cat /etc/php5/cli/php.ini | grep "mosquitto"` ]]; then
   	echo "" | pecl install Mosquitto-alpha
