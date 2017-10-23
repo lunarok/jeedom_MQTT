@@ -2,16 +2,16 @@
 
 The plugin configuration is only 5 informations :
 
-  Adresse du broker Mosquitto (peut être présent ailleurs sur le réseau)
+  - Adresse du broker Mosquitto (peut être présent ailleurs sur le réseau)
 
-  Port du serveur Mosquitto (1883 par défaut)
+  - Port du serveur Mosquitto (1883 par défaut)
 
-  Identifiant de Jeedom avec lequel il publiera sur le broker
+  - Identifiant de Jeedom avec lequel il publiera sur le broker
   Il est possible d'ajouter un compte et mot de passe si la connexion le requiert.
 
-  Topic parent à partir duquel le plugin va ajouter les sous topics en mode automatique (défaut #)
+  - Topic parent à partir duquel le plugin va ajouter les sous topics en mode automatique (défaut #)
 
-  Mode Automatique ou Manuel.
+  - Mode Automatique ou Manuel.
 
 Il et aussi possible de choisir si l'ajout de topics doit se faire de manière 100% automatique ou semi manuelle.
 En mode automatique, le plugin souscrira au topic parent et ajoutera automatiquement les sous topics trouvés depuis le topic parent.
