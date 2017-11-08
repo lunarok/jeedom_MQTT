@@ -140,37 +140,6 @@ $eqLogics = eqLogic::byType('MQTT');
               </div>
             </div>
 
-            <div class="form-group">
-              <label class="col-sm-3 control-label">{{Qos}}</label>
-              <div id="mqttqos" class="col-sm-3">
-                <select style="width : 40pxpx;" class="eqLogicAttr form-control input-sm" data-l1key="configuration" data-l2key="Qos">
-                  <option value="0">0</option>
-                  <option value="1" selected>1</option>
-                  <option value="2">2</option>
-
-
-                </select>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-3 control-label">{{Topic Enfant}}</label>
-              <div class="col-sm-8">
-                <label class="checkbox-inline"><input id="isChild" type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="isChild" disabled readonly /></label>
-              </div>
-            </div>
-
-            <div class="form-group ">
-              <label class="col-sm-3 control-label">{{Profondeur du Topic: }}</label>
-              <div id="mqttdepth" class="col-sm-3">
-                <select style="width : 140pxpx;" class="eqLogicAttr form-control input-sm" data-l1key="configuration" data-l2key="wcard">
-                  <option value="+" selected>{{Ce topic seulement (+)}}</option>
-                  <option value="#">{{Tout les sous-topics} (#)}}</option>
-
-                </select>
-              </div>
-            </label>
-          </div>
-
           <div class="form-group">
             <label class="col-sm-3 control-label">{{Icone du topic}}</label>
             <div class="col-sm-3">
