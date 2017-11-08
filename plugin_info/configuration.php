@@ -63,7 +63,7 @@ if (!isConnect()) {
 		<div class="form-group">
 				<label class="col-sm-4 control-label">{{Decouverte Automatique des topics: }}</label>
 				<div class="col-sm-2">
-					<input id="mosquitto_por" type="checkbox" class="configKey autoCheck" data-l1key="mqttAuto" onchange="auto_changed()" checked /> 					
+					<input id="mosquitto_por" type="checkbox" class="configKey autoCheck" data-l1key="mqttAuto" onchange="auto_changed()" checked />
 				</div>
         </div>
 		<div class="form-group" id="mqtt_topic">
@@ -82,20 +82,6 @@ if (!isConnect()) {
 				</select>
 			</div>
         </div>
-    
+
 	</fieldset>
 </form>
- 
-<script type="text/javascript">
-function auto_changed()
-{
-    if($('.autoCheck').is(":checked"))  { 
-        $("#mqtt_topic").show();
-		$("#mqtt_qos").show();
-	}
-    else {
-        $("#mqtt_topic").hide();
-		$("#mqtt_qos").hide();
-	}
-}
-</script>

@@ -193,7 +193,6 @@ class MQTT extends eqLogic {
       $cmdlogic->setEqLogic_id($elogic->getId());
       $cmdlogic->setEqType('MQTT');
       $cmdlogic->setIsVisible(1);
-      $cmdlogic->setIsHistorized(0);
       $cmdlogic->setSubType('string');
       $cmdlogic->setLogicalId($cmdId);
       $cmdlogic->setType('info');
@@ -235,7 +234,7 @@ class MQTT extends eqLogic {
     }
   }
 
-  public static function publishMosquitto( $_subject, $_message, $_qos , $_retain) {
+  public static function publishMosquitto( $_subject, $_message, $_qos , $_retain = 1) {
     log::add('MQTT', 'debug', 'Envoi du message ' . $_message . ' vers ' . $_subject);
     $publish = new Mosquitto\Client(config::byKey('mqttId', 'MQTT', 'Jeedom') . '_pub');
     if (config::byKey('mqttUser', 'MQTT', 'none') != 'none') {
@@ -259,8 +258,6 @@ class MQTTCmd extends cmd {
       case 'action' :
       $request = $this->getConfiguration('request','1');
       $topic = $this->getConfiguration('topic');
-      $qos = ($this->getConfiguration('Qos') == NULL) ? 1 : $this->getConfiguration('Qos');
-      $retain = ($this->getConfiguration('retain') == 0) ? false : true;
       switch ($this->getSubType()) {
         case 'slider':
         $request = str_replace('#slider#', $_options['slider'], $request);
@@ -274,7 +271,7 @@ class MQTTCmd extends cmd {
         break;
       }
       $request = jeedom::evaluateExpression($request);
-      MQTT::publishMosquitto($topic, $request, $qos, $retain);
+      MQTT::publishMosquitto($topic, $request, config::byKey('mqttQos', 'MQTT', '1'));
       }
       return true;
     }
