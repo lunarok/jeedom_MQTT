@@ -111,7 +111,7 @@ class MQTT extends eqLogic {
     $client->setWill('/jeedom', "Client died :-(", 1, 0);
 
     try {
-      if (isset(config::byKey('mqttUser', 'MQTT'))) {
+      if (config::byKey('mqttUser', 'MQTT', 'none') != 'none') {
         $client->setCredentials(config::byKey('mqttUser', 'MQTT'), config::byKey('mqttPass', 'MQTT'));
       }
       $client->connect(config::byKey('mqttAdress', 'MQTT', '127.0.0.1'), config::byKey('mqttPort', 'MQTT', '1883'), 60);
@@ -238,7 +238,7 @@ class MQTT extends eqLogic {
   public static function publishMosquitto( $_subject, $_message, $_qos , $_retain) {
     log::add('MQTT', 'debug', 'Envoi du message ' . $_message . ' vers ' . $_subject);
     $publish = new Mosquitto\Client(config::byKey('mqttId', 'MQTT', 'Jeedom') . '_pub');
-    if (isset(config::byKey('mqttUser', 'MQTT'))) {
+    if (config::byKey('mqttUser', 'MQTT', 'none') != 'none') {
       $publish->setCredentials(config::byKey('mqttUser', 'MQTT'), config::byKey('mqttPass', 'MQTT'));
     }
     $publish->connect(config::byKey('mqttAdress', 'MQTT', '127.0.0.1'), config::byKey('mqttPort', 'MQTT', '1883'), 60);
