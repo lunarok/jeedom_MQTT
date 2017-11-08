@@ -186,10 +186,6 @@ class MQTT extends eqLogic {
 
   public static function message( $message ) {
     log::add('MQTT', 'debug', 'Message ' . $message->payload . ' sur ' . $message->topic);
-    if(empty($message->topic)) {
-      log::add('MQTT', 'debug', 'Message skipped : "'.$message->topic.'" is not a valid topic');
-      return;
-    }
 
     $topicArray = explode("/", $message->topic);
     $cmdId = end($topicArray);
