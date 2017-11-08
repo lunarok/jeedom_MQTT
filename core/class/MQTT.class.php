@@ -119,14 +119,12 @@ class MQTT extends eqLogic {
       if (config::byKey('mqttAuto', 'MQTT') == 0) {  // manual mode
         foreach (eqLogic::byType('MQTT', true) as $mqtt) {
           if ($mqtt->getConfiguration('isChild') != "1") {
-            $qos = (int)$mqtt->getConfiguration('Qos');
-            if (!$qos) $qos = 1;
             if($mqtt->getConfiguration('wcard')) {
               $fulltopic = $mqtt->getConfiguration('topic') . "/" . $mqtt->getConfiguration('wcard');
             }
             else $fulltopic = $mqtt->getConfiguration('topic');
             log::add('MQTT', 'info', 'Subscribe to topic ' . $fulltopic);
-            $client->subscribe($fulltopic, $qos); // Subscribe to topic
+            $client->subscribe($fulltopic, config::byKey('mqttQos', 'MQTT', 1)); // Subscribe to topic
           }
         }
       }
