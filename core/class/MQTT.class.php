@@ -90,7 +90,6 @@ class MQTT extends eqLogic {
     if ($output[0] != "" && $libphp) {
       $return['state'] = 'ok';
     }
-    //log::add('MQTT', 'debug', 'Lib : ' . print_r(get_loaded_extensions(),true));
     return $return;
   }
 
@@ -102,27 +101,8 @@ class MQTT extends eqLogic {
   }
 
   public static function daemon() {
-    $mosqHost = config::byKey('mqttAdress', 'MQTT', '127.0.0.1');
-    $mosqPort = config::byKey('mqttPort', 'MQTT', '1883');
-    $mosqId = config::byKey('mqttId', 'MQTT', 'Jeedom');
-    $mosqTopic = config::byKey('mqttTopic', 'MQTT', '#');
-    $mosqQos = config::byKey('mqttQos', 'MQTT', 1);
-
-    //$mosqAuth = config::byKey('mqttAuth', 'MQTT', 0);
-    $mosqUser = config::byKey('mqttUser', 'MQTT', 0);
-    $mosqPass = config::byKey('mqttPass', 'MQTT', 0);
-    //$mosqSecure = config::byKey('mqttSecure', 'MQTT', 0);
-    //$mosqCA = config::byKey('mqttCA', 'MQTT', 0);
-    //$mosqTree = config::byKey('mqttTree', 'MQTT', 0);
-    log::add('MQTT', 'info', 'Paramètres utilisés, Host : ' . $mosqHost . ', Port : ' . $mosqPort . ', ID : ' . $mosqId);
-    $client = new Mosquitto\Client($mosqId);
-    //if ($mosqAuth) {
-    //$client->setCredentials($mosqUser, $mosqPass);
-    //}
-    //if ($mosqSecure) {
-    //$client->setTlsOptions($certReqs = Mosquitto\Client::SSL_VERIFY_PEER, $tlsVersion = 'tlsv1.2', $ciphers=NULL);
-    //$client->setTlsCertificates($caPath = 'path/to/my/ca.crt');
-    //}
+    log::add('MQTT', 'info', 'Paramètres utilisés, Host : ' . config::byKey('mqttAdress', 'MQTT', '127.0.0.1') . ', Port : ' . config::byKey('mqttPort', 'MQTT', '1883') . ', ID : ' . config::byKey('mqttId', 'MQTT', 'Jeedom'));
+    $client = new Mosquitto\Client(config::byKey('mqttId', 'MQTT', 'Jeedom'));
     $client->onConnect('MQTT::connect');
     $client->onDisconnect('MQTT::disconnect');
     $client->onSubscribe('MQTT::subscribe');
@@ -131,30 +111,28 @@ class MQTT extends eqLogic {
     $client->setWill('/jeedom', "Client died :-(", 1, 0);
 
     try {
-      if (isset($mosqUser)) {
-        $client->setCredentials($mosqUser, $mosqPass);
+      if (isset(config::byKey('mqttUser', 'MQTT'))) {
+        $client->setCredentials(config::byKey('mqttUser', 'MQTT'), config::byKey('mqttPass', 'MQTT'));
       }
-      $client->connect($mosqHost, $mosqPort, 60);
+      $client->connect(config::byKey('mqttAdress', 'MQTT', '127.0.0.1'), config::byKey('mqttPort', 'MQTT', '1883'), 60);
 
       if (config::byKey('mqttAuto', 'MQTT') == 0) {  // manual mode
         foreach (eqLogic::byType('MQTT', true) as $mqtt) {
           if ($mqtt->getConfiguration('isChild') != "1") {
-            $devicetopic = $mqtt->getConfiguration('topic');
-            $wildcard    = $mqtt->getConfiguration('wcard');
-            $qos         = (int)$mqtt->getConfiguration('Qos');
+            $qos = (int)$mqtt->getConfiguration('Qos');
             if (!$qos) $qos = 1;
-            if($wildcard) {
-              $fulltopic = $devicetopic . "/" . $wildcard;
+            if($mqtt->getConfiguration('wcard')) {
+              $fulltopic = $mqtt->getConfiguration('topic') . "/" . $mqtt->getConfiguration('wcard');
             }
-            else $fulltopic = $devicetopic;
+            else $fulltopic = $mqtt->getConfiguration('topic');
             log::add('MQTT', 'info', 'Subscribe to topic ' . $fulltopic);
             $client->subscribe($fulltopic, $qos); // Subscribe to topic
           }
         }
       }
       else {
-        $client->subscribe($mosqTopic, $mosqQos); // !auto: Subscribe to root topic
-        log::add('MQTT', 'debug', 'Subscribe to topic ' . $mosqtopic);
+        $client->subscribe(config::byKey('mqttTopic', 'MQTT', '#'), config::byKey('mqttQos', 'MQTT', 1)); // !auto: Subscribe to root topic
+        log::add('MQTT', 'debug', 'Subscribe to topic ' . config::byKey('mqttTopic', 'MQTT', '#'));
       }
       //$client->loopForever();
       while (true) { $client->loop(); }
@@ -175,7 +153,7 @@ class MQTT extends eqLogic {
   }
 
   public static function subscribe( ) {
-    log::add('MQTT', 'debug', 'Subscribe ');
+    log::add('MQTT', 'debug', 'Subscribe to topics');
   }
 
   public static function logmq( $code, $str ) {
@@ -196,23 +174,18 @@ class MQTT extends eqLogic {
 
     $elogic = self::byLogicalId($nodeid, 'MQTT');
 
-    if (is_object($elogic)) {
-      $elogic->setStatus('lastCommunication', date('Y-m-d H:i:s'));
-      $elogic->save();
-    } else {
+    if (!is_object($elogic)) {
       $elogic = new MQTT();
       $elogic->setEqType_name('MQTT');
       $elogic->setLogicalId($nodeid);
       $elogic->setName($nodeid);
-      $elogic->setIsEnable(true);
-      $elogic->setStatus('lastCommunication', date('Y-m-d H:i:s'));
+      $elogic->setIsEnable(1);
       $elogic->setConfiguration('topic', $nodeid);
-      $elogic->setConfiguration('wcard', '+');
-      $elogic->setConfiguration('Qos', '1');
-      $elogic->setConfiguration('isChild', '1');
       log::add('MQTT', 'info', 'Saving device ');
       $elogic->save();
     }
+    $elogic->setStatus('lastCommunication', date('Y-m-d H:i:s'));
+    $elogic->save();
 
     log::add('MQTT', 'info', 'Message texte : ' . $value . ' pour information : ' . $cmdId . ' sur : ' . $nodeid);
     $cmdlogic = MQTTCmd::byEqLogicIdAndLogicalId($elogic->getId(),$cmdId);
@@ -264,20 +237,14 @@ class MQTT extends eqLogic {
     }
   }
 
-  public static function publishMosquitto( $subject, $message, $qos , $retain) {
-    log::add('MQTT', 'debug', 'Envoi du message ' . $message . ' vers ' . $subject);
-    $mosqHost = config::byKey('mqttAdress', 'MQTT', '127.0.0.1');
-    $mosqPort = config::byKey('mqttPort', 'MQTT', '1883');
-    $mosqId = config::byKey('mqttId', 'MQTT', 'Jeedom');
-    $mosqPub = $mosqId . '_pub';
-    $mosqUser = config::byKey('mqttUser', 'MQTT', 0);
-    $mosqPass = config::byKey('mqttPass', 'MQTT', 0);
-    $publish = new Mosquitto\Client($mosqPub);
-    if (isset($mosqUser)) {
-      $publish->setCredentials($mosqUser, $mosqPass);
+  public static function publishMosquitto( $_subject, $_message, $_qos , $_retain) {
+    log::add('MQTT', 'debug', 'Envoi du message ' . $_message . ' vers ' . $_subject);
+    $publish = new Mosquitto\Client(config::byKey('mqttId', 'MQTT', 'Jeedom') . '_pub');
+    if (isset(config::byKey('mqttUser', 'MQTT'))) {
+      $publish->setCredentials(config::byKey('mqttUser', 'MQTT'), config::byKey('mqttPass', 'MQTT'));
     }
-    $publish->connect($mosqHost, $mosqPort, 60);
-    $publish->publish($subject, $message, $qos, $retain);
+    $publish->connect(config::byKey('mqttAdress', 'MQTT', '127.0.0.1'), config::byKey('mqttPort', 'MQTT', '1883'), 60);
+    $publish->publish($_subject, $_message, $_qos, $_retain);
     for ($i = 0; $i < 100; $i++) {
       // Loop around to permit the library to do its work
       $publish->loop(1);
@@ -291,19 +258,11 @@ class MQTT extends eqLogic {
 class MQTTCmd extends cmd {
   public function execute($_options = null) {
     switch ($this->getType()) {
-      case 'info' :
-      return $this->getConfiguration('value');
-      break;
-
       case 'action' :
-      $request = $this->getConfiguration('request');
+      $request = $this->getConfiguration('request','1');
       $topic = $this->getConfiguration('topic');
-      $qos = $this->getConfiguration('Qos');
-      if ($this->getConfiguration('retain') == 0) $retain = false;
-      else $retain = true;
-
-      if ($qos == NULL) $qos = 1; //default to 1
-
+      $qos = ($this->getConfiguration('Qos') == NULL) ? 1 : $this->getConfiguration('Qos');
+      $retain = ($this->getConfiguration('retain') == 0) ? false : true;
       switch ($this->getSubType()) {
         case 'slider':
         $request = str_replace('#slider#', $_options['slider'], $request);
@@ -312,34 +271,12 @@ class MQTTCmd extends cmd {
         $request = str_replace('#color#', $_options['color'], $request);
         break;
         case 'message':
-        if ($_options != null)  {
-
-          $replace = array('#title#', '#message#');
-          $replaceBy = array($_options['title'], $_options['message']);
-          if ( $_options['title'] == '') {
-            throw new Exception(__('Le sujet ne peuvent être vide', __FILE__));
-          }
-          $request = str_replace($replace, $replaceBy, $request);
-
-        }
-        else
-        $request = 1;
-
+        $request = str_replace('#title#', $_options['title'], $request);
+        $request = str_replace('#message#', $_options['message'], $request);
         break;
-        default : $request == null ?  1 : $request;
-
       }
       $request = jeedom::evaluateExpression($request);
-      $eqLogic = $this->getEqLogic();
-
-      MQTT::publishMosquitto(
-        $topic ,
-        $request ,
-        $qos,
-        $retain );
-
-        $result = $request;
-        return $result;
+      MQTT::publishMosquitto($topic, $request, $qos, $retain);
       }
       return true;
     }
