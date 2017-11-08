@@ -72,17 +72,17 @@ $eqLogics = eqLogic::byType('MQTT');
       ?>
     </div>
   </div>
-<div class="col-lg-10 col-md-9 col-sm-8 eqLogic" style="border-left: solid 1px #EEE; padding-left: 25px;display: none;">
- <a class="btn btn-success eqLogicAction pull-right" data-action="save"><i class="fa fa-check-circle"></i> {{Sauvegarder}}</a>
- <a class="btn btn-danger eqLogicAction pull-right" data-action="remove"><i class="fa fa-minus-circle"></i> {{Supprimer}}</a>
- <a class="btn btn-default eqLogicAction pull-right" data-action="configure"><i class="fa fa-cogs"></i> {{Configuration avancée}}</a>
- <ul class="nav nav-tabs" role="tablist">
-  <li role="presentation"><a href="#" class="eqLogicAction" aria-controls="home" role="tab" data-toggle="tab" data-action="returnToThumbnailDisplay"><i class="fa fa-arrow-circle-left"></i></a></li>
-  <li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fa fa-tachometer"></i> {{Equipement}}</a></li>
-  <li role="presentation"><a href="#commandtab" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-list-alt"></i> {{Commandes}}</a></li>
-</ul>
-<div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
-  <div role="tabpanel" class="tab-pane active" id="eqlogictab">
+  <div class="col-lg-10 col-md-9 col-sm-8 eqLogic" style="border-left: solid 1px #EEE; padding-left: 25px;display: none;">
+    <a class="btn btn-success eqLogicAction pull-right" data-action="save"><i class="fa fa-check-circle"></i> {{Sauvegarder}}</a>
+    <a class="btn btn-danger eqLogicAction pull-right" data-action="remove"><i class="fa fa-minus-circle"></i> {{Supprimer}}</a>
+    <a class="btn btn-default eqLogicAction pull-right" data-action="configure"><i class="fa fa-cogs"></i> {{Configuration avancée}}</a>
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation"><a href="#" class="eqLogicAction" aria-controls="home" role="tab" data-toggle="tab" data-action="returnToThumbnailDisplay"><i class="fa fa-arrow-circle-left"></i></a></li>
+      <li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fa fa-tachometer"></i> {{Equipement}}</a></li>
+      <li role="presentation"><a href="#commandtab" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-list-alt"></i> {{Commandes}}</a></li>
+    </ul>
+    <div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
+      <div role="tabpanel" class="tab-pane active" id="eqlogictab">
         <form class="form-horizontal">
           <fieldset>
             <div class="form-group">
@@ -126,147 +126,126 @@ $eqLogics = eqLogic::byType('MQTT');
               </div>
             </div>
 
-
-            <div class="form-group expertModeVisible">
-              <label class="col-sm-3 control-label">{{Délai max entre 2 messages}}</label>
-              <div class="col-sm-3">
-                <input class="eqLogicAttr form-control" data-l1key="timeout" placeholder="{{Délai maximum autorisé entre 2 messages (en mn)}}"/>
-              </div>
-            </div>
-            <div class="form-group expertModeVisible">
+            <div class="form-group">
               <label class="col-sm-3 control-label">{{Type de piles}}</label>
               <div class="col-sm-3">
                 <input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="battery_type" placeholder="{{Doit être indiqué sous la forme : 3xAA}}"/>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-3 control-label">{{Commentaire}}</label>
-              <div class="col-sm-3">
-                <textarea class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="commentaire" ></textarea>
               </div>
             </div>
 
             <div class="form-group">
               <label class="col-sm-3 control-label">{{Inscrit au Topic}}</label>
               <div class="col-sm-3">
-				
-				<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="topic" placeholder="{{Topic principal de l'équipement MQTT}}"/>
+
+                <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="topic" placeholder="{{Topic principal de l'équipement MQTT}}"/>
               </div>
             </div>
-			
-			<div class="form-group">
+
+            <div class="form-group">
               <label class="col-sm-3 control-label">{{Qos}}</label>
               <div id="mqttqos" class="col-sm-3">
-				<select style="width : 40pxpx;" class="eqLogicAttr form-control input-sm" data-l1key="configuration" data-l2key="Qos">
-					<option value="0">0</option>
-					<option value="1" selected>1</option>
-					<option value="2">2</option>
+                <select style="width : 40pxpx;" class="eqLogicAttr form-control input-sm" data-l1key="configuration" data-l2key="Qos">
+                  <option value="0">0</option>
+                  <option value="1" selected>1</option>
+                  <option value="2">2</option>
 
 
-				</select>
-              </div>
-            </div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label">{{Topic Enfant}}</label>
-				<div class="col-sm-8">	
-					<label class="checkbox-inline"><input id="isChild" type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="isChild" disabled readonly /></label>
-				</div>
-			</div>
-            
-			<div class="form-group ">
-				<label class="col-sm-3 control-label">{{Profondeur du Topic: }}</label>
-					<div id="mqttdepth" class="col-sm-3">
-						<select style="width : 140pxpx;" class="eqLogicAttr form-control input-sm" data-l1key="configuration" data-l2key="wcard">
-							<option value="+" selected>{{Ce topic seulement (+)}}</option>
-							<option value="#">{{Tout les sous-topics} (#)}}</option>
-							
-						</select>
-					</div>
-				</label>
-			</div>
-			
-            <div class="form-group">
-              <label class="col-sm-3 control-label">{{Dernière Activité}}</label>
-              <div class="col-sm-3">
-                <span class="eqLogicAttr" data-l1key="configuration" data-l2key="updatetime"></span>
-              </div>
-            </div>
-
-
-            <div class="form-group">
-              <label class="col-sm-3 control-label">{{Catégorie du topic}}</label>
-              <div class="col-sm-3">
-                <select id="sel_icon" class="form-control eqLogicAttr" data-l1key="configuration" data-l2key="icone">
-                  <option value="">{{Aucun}}</option>
-                  <option value="433">{{RF433}}</option>
-                  <option value="barometre">{{Baromètre}}</option>
-                  <option value="boiteauxlettres">{{Boite aux Lettres}}</option>
-                  <option value="chauffage">{{Chauffage}}</option>
-                  <option value="compteur">{{Compteur}}</option>
-                  <option value="contact">{{Contact}}</option>
-                  <option value="feuille">{{Culture}}</option>
-                  <option value="custom">{{Custom}}</option>
-                  <option value="dimmer">{{Dimmer}}</option>
-                  <option value="energie">{{Energie}}</option>
-                  <option value="garage">{{Garage}}</option>
-                  <option value="humidity">{{Humidité}}</option>
-                  <option value="humiditytemp">{{Humidité et Température}}</option>
-                  <option value="hydro">{{Hydrométrie}}</option>
-                  <option value="ir2">{{Infra Rouge}}</option>
-                  <option value="jauge">{{Jauge}}</option>
-                  <option value="light">{{Luminosité}}</option>
-                  <option value="meteo">{{Météo}}</option>
-                  <option value="motion">{{Mouvement}}</option>
-                  <option value="multisensor">{{Multisensor}}</option>
-                  <option value="prise">{{Prise}}</option>
-                  <option value="relay">{{Relais}}</option>
-                  <option value="rfid">{{RFID}}</option>
-                  <option value="teleinfo">{{Téléinfo}}</option>
-                  <option value="temp">{{Température}}</option>
-                  <option value="thermostat">{{Thermostat}}</option>
-                  <option value="volet">{{Volet}}</option>
                 </select>
               </div>
             </div>
             <div class="form-group">
-              <div style="text-align: center">
-                <img name="icon_visu" src="" width="160" height="200"/>
+              <label class="col-sm-3 control-label">{{Topic Enfant}}</label>
+              <div class="col-sm-8">
+                <label class="checkbox-inline"><input id="isChild" type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="isChild" disabled readonly /></label>
               </div>
             </div>
 
-          </fieldset>
-        </form>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="commandtab">
+            <div class="form-group ">
+              <label class="col-sm-3 control-label">{{Profondeur du Topic: }}</label>
+              <div id="mqttdepth" class="col-sm-3">
+                <select style="width : 140pxpx;" class="eqLogicAttr form-control input-sm" data-l1key="configuration" data-l2key="wcard">
+                  <option value="+" selected>{{Ce topic seulement (+)}}</option>
+                  <option value="#">{{Tout les sous-topics} (#)}}</option>
 
-        <form class="form-horizontal">
-          <fieldset>
-            <div class="form-actions">
-              <a class="btn btn-success btn-sm cmdAction" id="bt_addMQTTAction"><i class="fa fa-plus-circle"></i> {{Ajouter une commande action}}</a>
+                </select>
+              </div>
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label">{{Catégorie du topic}}</label>
+            <div class="col-sm-3">
+              <select id="sel_icon" class="form-control eqLogicAttr" data-l1key="configuration" data-l2key="icone">
+                <option value="">{{Aucun}}</option>
+                <option value="433">{{RF433}}</option>
+                <option value="barometre">{{Baromètre}}</option>
+                <option value="boiteauxlettres">{{Boite aux Lettres}}</option>
+                <option value="chauffage">{{Chauffage}}</option>
+                <option value="compteur">{{Compteur}}</option>
+                <option value="contact">{{Contact}}</option>
+                <option value="feuille">{{Culture}}</option>
+                <option value="custom">{{Custom}}</option>
+                <option value="dimmer">{{Dimmer}}</option>
+                <option value="energie">{{Energie}}</option>
+                <option value="garage">{{Garage}}</option>
+                <option value="humidity">{{Humidité}}</option>
+                <option value="humiditytemp">{{Humidité et Température}}</option>
+                <option value="hydro">{{Hydrométrie}}</option>
+                <option value="ir2">{{Infra Rouge}}</option>
+                <option value="jauge">{{Jauge}}</option>
+                <option value="light">{{Luminosité}}</option>
+                <option value="meteo">{{Météo}}</option>
+                <option value="motion">{{Mouvement}}</option>
+                <option value="multisensor">{{Multisensor}}</option>
+                <option value="prise">{{Prise}}</option>
+                <option value="relay">{{Relais}}</option>
+                <option value="rfid">{{RFID}}</option>
+                <option value="teleinfo">{{Téléinfo}}</option>
+                <option value="temp">{{Température}}</option>
+                <option value="thermostat">{{Thermostat}}</option>
+                <option value="volet">{{Volet}}</option>
+              </select>
             </div>
-          </fieldset>
-        </form>
-        <br />
-        <table id="table_cmd" class="table table-bordered table-condensed">
-          <thead>
-            <tr>
-              <th style="width: 50px;">#</th>
-              <th style="width: 150px;">{{Nom}}</th>
-              <th style="width: 110px;">{{Sous-Type}}</th>
-              <th>{{Topic}}</th>
-              <th style="width: 100px;">{{Valeur}}</th>
-              <th style="width: 200px;">{{Paramètres}}</th>
-              <th style="width: 100px;"></th>
-            </tr>
-          </thead>
-          <tbody>
+          </div>
+          <div class="form-group">
+            <div style="text-align: center">
+              <img name="icon_visu" src="" width="160" height="200"/>
+            </div>
+          </div>
 
-          </tbody>
-        </table>
+        </fieldset>
+      </form>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="commandtab">
 
-      </div>
+      <form class="form-horizontal">
+        <fieldset>
+          <div class="form-actions">
+            <a class="btn btn-success btn-sm cmdAction" id="bt_addMQTTAction"><i class="fa fa-plus-circle"></i> {{Ajouter une commande action}}</a>
+          </div>
+        </fieldset>
+      </form>
+      <br />
+      <table id="table_cmd" class="table table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th style="width: 50px;">#</th>
+            <th style="width: 150px;">{{Nom}}</th>
+            <th style="width: 110px;">{{Sous-Type}}</th>
+            <th>{{Topic}}</th>
+            <th style="width: 100px;">{{Valeur}}</th>
+            <th style="width: 200px;">{{Paramètres}}</th>
+            <th style="width: 100px;"></th>
+          </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+
     </div>
   </div>
+</div>
 </div>
 
 <?php include_file('desktop', 'MQTT', 'js', 'MQTT'); ?>
