@@ -186,6 +186,10 @@ class MQTT extends eqLogic {
 
   public static function message( $message ) {
     log::add('MQTT', 'debug', 'Message ' . $message->payload . ' sur ' . $message->topic);
+    if(empty($message->topic)) {
+      log::add('MQTT', 'debug', 'Message skipped : "'.$message->topic.'" is not a valid topic');
+      return;
+    }
 
     $topicArray = explode("/", $message->topic);
     $cmdId = end($topicArray);
@@ -227,7 +231,7 @@ class MQTT extends eqLogic {
       $cmdlogic->setLogicalId($cmdId);
       $cmdlogic->setType('info');
       $cmdlogic->setName( $cmdId );
-      $cmdlogic->setConfiguration('topic', $topic);
+      $cmdlogic->setConfiguration('topic', $message->topic);
       $cmdlogic->setConfiguration('parseJson', 0); //default don't parse json data
       $cmdlogic->save();
     }
