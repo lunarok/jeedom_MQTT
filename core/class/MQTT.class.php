@@ -179,9 +179,10 @@ class MQTT extends eqLogic {
   }
 
   public static function logmq( $code, $str ) {
-    log::add('MQTT', 'debug', $code . ' : ' . $str);
+    if (strpos($str,'PINGREQ') === false && strpos($str,'PINGRESP') === false) {
+      log::add('MQTT', 'debug', $code . ' : ' . $str);
+    }
   }
-
 
   public static function message( $message ) {
     log::add('MQTT', 'debug', 'Message ' . $message->payload . ' sur ' . $message->topic);
