@@ -181,6 +181,7 @@ class MQTT extends eqLogic {
     $elogic->setStatus('lastCommunication', date('Y-m-d H:i:s'));
     $elogic->save();
 
+    if ($type == 'topic') {
     $cmdlogic = MQTTCmd::byEqLogicIdAndLogicalId($elogic->getId(),$cmdId);
     if (!is_object($cmdlogic)) {
       log::add('MQTT', 'info', 'Cmdlogic n existe pas, creation');
@@ -196,7 +197,7 @@ class MQTT extends eqLogic {
     }
     $elogic->checkAndUpdateCmd($cmdId,$value);
 
-    if ($type == 'json') {
+  } else {
       // payload is json
       $json = json_decode($value);
       foreach ($json as $cmdId => $value) {
