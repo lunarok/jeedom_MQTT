@@ -18,18 +18,6 @@
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 
 class MQTT extends eqLogic {
-  public function postSave() {
-    if (config::byKey('mqttAuto', 'MQTT') == 0) {  // manual mode
-      self::deamon_stop();
-    }
-  }
-
-  public function postRemove() {
-    if (config::byKey('mqttAuto', 'MQTT') == 0) {  // manual mode
-      self::deamon_stop();
-    }
-  }
-
   public static function health() {
     $return = array();
     $socket = socket_create(AF_INET, SOCK_STREAM, 0);
@@ -162,64 +150,64 @@ class MQTT extends eqLogic {
 
   public static function message( $message ) {
     log::add('MQTT', 'debug', 'Message ' . $message->payload . ' sur ' . $message->topic);
-
-    $topicArray = explode("/", $message->topic);
-    $cmdId = end($topicArray);
-    $key = count($topicArray) - 1;
-    unset($topicArray[$key]);
-    $nodeid = (implode($topicArray,'/'));
-    $value = $message->payload;
+    if (is_string($message->payload) && is_array(json_decode($message->payload, true)) && (json_last_error() == JSON_ERROR_NONE)) {
+      //json message
+      $nodeid = $message->topic;
+      $value = $message->payload;
+      $type = 'json';
+      log::add('MQTT', 'info', 'Message json : ' . $value . ' pour information sur : ' . $nodeid);
+    } else {
+      $topicArray = explode("/", $message->topic);
+      $cmdId = end($topicArray);
+      $key = count($topicArray) - 1;
+      unset($topicArray[$key]);
+      $nodeid = implode($topicArray,'/');
+      $value = $message->payload;
+      $type = 'topic';
+      log::add('MQTT', 'info', 'Message texte : ' . $value . ' pour information : ' . $cmdId . ' sur : ' . $nodeid);
+    }
 
     $elogic = self::byLogicalId($nodeid, 'MQTT');
-
     if (!is_object($elogic)) {
       $elogic = new MQTT();
       $elogic->setEqType_name('MQTT');
       $elogic->setLogicalId($nodeid);
       $elogic->setName($nodeid);
-      $elogic->setIsEnable(1);
       $elogic->setConfiguration('topic', $nodeid);
-      log::add('MQTT', 'info', 'Saving device ');
+      $elogic->setConfiguration('type', $type);
+      log::add('MQTT', 'info', 'Saving device ' . $nodeid);
       $elogic->save();
     }
     $elogic->setStatus('lastCommunication', date('Y-m-d H:i:s'));
     $elogic->save();
 
-    log::add('MQTT', 'info', 'Message texte : ' . $value . ' pour information : ' . $cmdId . ' sur : ' . $nodeid);
     $cmdlogic = MQTTCmd::byEqLogicIdAndLogicalId($elogic->getId(),$cmdId);
     if (!is_object($cmdlogic)) {
       log::add('MQTT', 'info', 'Cmdlogic n existe pas, creation');
       $cmdlogic = new MQTTCmd();
       $cmdlogic->setEqLogic_id($elogic->getId());
       $cmdlogic->setEqType('MQTT');
-      $cmdlogic->setIsVisible(1);
       $cmdlogic->setSubType('string');
       $cmdlogic->setLogicalId($cmdId);
       $cmdlogic->setType('info');
       $cmdlogic->setName( $cmdId );
       $cmdlogic->setConfiguration('topic', $message->topic);
-      $cmdlogic->setConfiguration('parseJson', 0); //default don't parse json data
       $cmdlogic->save();
     }
-    $cmdlogic->setConfiguration('value', $value);
-    $cmdlogic->save();
-    $cmdlogic->event($value);
+    $elogic->checkAndUpdateCmd($cmdId,$value);
 
-    if ($value[0] == '{' && substr($value, -1) == '}' && $cmdlogic->getConfiguration('parseJson') == 1) {
+    if ($type == 'json') {
       // payload is json
-      $nodeid = $message->topic;
       $json = json_decode($value);
       foreach ($json as $cmdId => $value) {
         $topicjson = $topic . '{' . $cmdId . '}';
-        log::add('MQTT', 'info', 'Message json : ' . $value . ' pour information : ' . $cmdId . ' sur : ' . $nodeid);
+        log::add('MQTT', 'info', 'Message json : ' . $value . ' pour information : ' . $cmdId);
         $cmdlogic = MQTTCmd::byEqLogicIdAndLogicalId($elogic->getId(),$cmdId);
         if (!is_object($cmdlogic)) {
           log::add('MQTT', 'info', 'Cmdlogic n existe pas, creation');
           $cmdlogic = new MQTTCmd();
           $cmdlogic->setEqLogic_id($elogic->getId());
           $cmdlogic->setEqType('MQTT');
-          $cmdlogic->setIsVisible(1);
-          $cmdlogic->setIsHistorized(0);
           $cmdlogic->setSubType('string');
           $cmdlogic->setLogicalId($cmdId);
           $cmdlogic->setType('info');
@@ -227,21 +215,19 @@ class MQTT extends eqLogic {
           $cmdlogic->setConfiguration('topic', $topicjson);
           $cmdlogic->save();
         }
-        $cmdlogic->setConfiguration('value', $value);
-        $cmdlogic->save();
-        $cmdlogic->event($value);
+        $elogic->checkAndUpdateCmd($cmdId,$value);
       }
     }
   }
 
-  public static function publishMosquitto( $_subject, $_message, $_qos , $_retain = 1) {
+  public static function publishMosquitto($_subject, $_message) {
     log::add('MQTT', 'debug', 'Envoi du message ' . $_message . ' vers ' . $_subject);
     $publish = new Mosquitto\Client(config::byKey('mqttId', 'MQTT', 'Jeedom') . '_pub');
     if (config::byKey('mqttUser', 'MQTT', 'none') != 'none') {
       $publish->setCredentials(config::byKey('mqttUser', 'MQTT'), config::byKey('mqttPass', 'MQTT'));
     }
     $publish->connect(config::byKey('mqttAdress', 'MQTT', '127.0.0.1'), config::byKey('mqttPort', 'MQTT', '1883'), 60);
-    $publish->publish($_subject, $_message, $_qos, $_retain);
+    $publish->publish($_subject, $_message, config::byKey('mqttQos', 'MQTT', '1'), 1);
     for ($i = 0; $i < 100; $i++) {
       // Loop around to permit the library to do its work
       $publish->loop(1);
@@ -271,7 +257,7 @@ class MQTTCmd extends cmd {
         break;
       }
       $request = jeedom::evaluateExpression($request);
-      MQTT::publishMosquitto($topic, $request, config::byKey('mqttQos', 'MQTT', '1'));
+      MQTT::publishMosquitto($topic, $request);
       }
       return true;
     }

@@ -132,6 +132,20 @@ $eqLogics = eqLogic::byType('MQTT');
               </div>
             </div>
 
+            <div class="form-group">
+              <label class="col-sm-3 control-label">{{Tpoic MQTT}}</label>
+              <div class="col-sm-3">
+                <span class="eqLogicAttr" data-l1key="configuration" data-l2key="topic"></span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">{{Commandes par topic ou json}}</label>
+              <div class="col-sm-3">
+                <span class="eqLogicAttr" data-l1key="configuration" data-l2key="type"></span>
+              </div>
+            </div>
+
           <div class="form-group">
             <label class="col-sm-3 control-label">{{Icone du topic}}</label>
             <div class="col-sm-3">

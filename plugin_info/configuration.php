@@ -60,12 +60,6 @@ if (!isConnect()) {
 					<input id="mosquitto_por" type="password" class="configKey form-control" data-l1key="mqttPass" style="margin-top:5px" placeholder="Jeedom"/>
 				</div>
         </div>
-		<div class="form-group">
-				<label class="col-sm-4 control-label">{{Decouverte Automatique des topics: }}</label>
-				<div class="col-sm-2">
-					<input id="mosquitto_por" type="checkbox" class="configKey autoCheck" data-l1key="mqttAuto" onchange="auto_changed()" checked />
-				</div>
-        </div>
 		<div class="form-group" id="mqtt_topic">
 				<label class="col-lg-4 control-label">{{Topic root (defaut: Tous): }}</label>
 				<div class="col-lg-4">
