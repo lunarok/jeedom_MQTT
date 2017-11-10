@@ -201,7 +201,7 @@ class MQTT extends eqLogic {
       // payload is json
       $json = json_decode($value, true);
       foreach ($json as $cmdId => $value) {
-        $topicjson = $topic . '{' . $cmdId . '}';
+        $topicjson = $nodeid . '{' . $cmdId . '}';
         log::add('MQTT', 'info', 'Message json : ' . $value . ' pour information : ' . $cmdId);
         $cmdlogic = MQTTCmd::byEqLogicIdAndLogicalId($elogic->getId(),$cmdId);
         if (!is_object($cmdlogic)) {
