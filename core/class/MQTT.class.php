@@ -199,7 +199,7 @@ class MQTT extends eqLogic {
 
   } else {
       // payload is json
-      $json = json_decode($value);
+      $json = json_decode($value, true);
       foreach ($json as $cmdId => $value) {
         $topicjson = $topic . '{' . $cmdId . '}';
         log::add('MQTT', 'info', 'Message json : ' . $value . ' pour information : ' . $cmdId);
