@@ -126,6 +126,8 @@ function addCmdToTable(_cmd) {
 		tr += '</td>';
 		tr += '<td>';
 		tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="topic" style="height : 33px;" ' + disabled + ' placeholder="{{Topic}}"><br/>';
+        tr += '</td>';
+		tr += '<td>';
 		tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="request" style="height : 33px;" ' + disabled + ' placeholder="{{Payload}}">';
 		tr += '<a class="btn btn-default btn-sm cursor listEquipementInfo" data-input="request" style="margin-left : 5px;"><i class="fa fa-list-alt "></i> {{Rechercher équipement}}</a>';
 		tr +='</select></span>';

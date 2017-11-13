@@ -258,6 +258,7 @@ class MQTTCmd extends cmd {
         break;
       }
       $request = jeedom::evaluateExpression($request);
+      $request = str_replace('\\', '', $request);
       MQTT::publishMosquitto($topic, $request);
       }
       return true;
