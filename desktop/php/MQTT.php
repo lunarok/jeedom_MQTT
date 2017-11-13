@@ -206,10 +206,10 @@ $eqLogics = eqLogic::byType('MQTT');
             <th style="width: 50px;">#</th>
             <th style="width: 150px;">{{Nom}}</th>
             <th style="width: 120px;">{{Sous-Type}}</th>
-            <th style="width: 40px;">{{Topic}}</th>
+            <th style="width: 400px;">{{Topic}}</th>
             <th style="width: 300px;">{{Payload}}</th>
-            <th style="width: 200px;">{{Paramètres}}</th>
-            <th style="width: 100px;"></th>
+            <th style="width: 150px;">{{Paramètres}}</th>
+            <th style="width: 80px;"></th>
           </tr>
         </thead>
         <tbody>
