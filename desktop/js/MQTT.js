@@ -14,6 +14,13 @@
 * You should have received a copy of the GNU General Public License
 * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
 */
+$("#table_cmd").delegate(".listEquipementInfo", 'click', function () {
+    var el = $(this);
+    jeedom.cmd.getSelectModal({cmd: {type: 'info'}}, function (result) {
+        var calcul = el.closest('tr').find('.cmdAttr[data-l1key=configuration][data-l2key=' + el.data('input') + ']');
+        calcul.atCaret('insert', result.human);
+    });
+});
 
 $("#bt_addMQTTAction").on('click', function(event) {
 	var _cmd = {type: 'action'};
