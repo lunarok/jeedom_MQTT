@@ -103,23 +103,8 @@ class MQTT extends eqLogic {
         $client->setCredentials(config::byKey('mqttUser', 'MQTT'), config::byKey('mqttPass', 'MQTT'));
       }
       $client->connect(config::byKey('mqttAdress', 'MQTT', '127.0.0.1'), config::byKey('mqttPort', 'MQTT', '1883'), 60);
-
-      if (config::byKey('mqttAuto', 'MQTT') == 0) {  // manual mode
-        foreach (eqLogic::byType('MQTT', true) as $mqtt) {
-          if ($mqtt->getConfiguration('isChild') != "1") {
-            if($mqtt->getConfiguration('wcard')) {
-              $fulltopic = $mqtt->getConfiguration('topic') . "/" . $mqtt->getConfiguration('wcard');
-            }
-            else $fulltopic = $mqtt->getConfiguration('topic');
-            log::add('MQTT', 'info', 'Subscribe to topic ' . $fulltopic);
-            $client->subscribe($fulltopic, config::byKey('mqttQos', 'MQTT', 1)); // Subscribe to topic
-          }
-        }
-      }
-      else {
         $client->subscribe(config::byKey('mqttTopic', 'MQTT', '#'), config::byKey('mqttQos', 'MQTT', 1)); // !auto: Subscribe to root topic
         log::add('MQTT', 'debug', 'Subscribe to topic ' . config::byKey('mqttTopic', 'MQTT', '#'));
-      }
       //$client->loopForever();
       while (true) { $client->loop(); }
     }
