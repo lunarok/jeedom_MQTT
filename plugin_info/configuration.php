@@ -76,6 +76,15 @@ if (!isConnect()) {
 				</select>
 			</div>
         </div>
+	    <div class="form-group" id="mqtt_qos">
+			<label class="col-lg-4 control-label">{{Retain}}</label>
+			<div class="col-lg-4">
+				<select style="width : 40pxpx;" class="configKey form-control" data-l1key="mqttRetain">
+					<option value="0">0</option>
+					<option value="1" selected>1</option>
+				</select>
+			</div>
+        </div>
 
 	</fieldset>
 </form>
