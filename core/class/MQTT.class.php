@@ -213,7 +213,7 @@ class MQTT extends eqLogic {
       $publish->setCredentials(config::byKey('mqttUser', 'MQTT'), config::byKey('mqttPass', 'MQTT'));
     }
     $publish->connect(config::byKey('mqttAdress', 'MQTT', '127.0.0.1'), config::byKey('mqttPort', 'MQTT', '1883'), 60);
-    $publish->publish($_subject, $_message, config::byKey('mqttQos', 'MQTT', '1'), 1);
+    $publish->publish($_subject, $_message, config::byKey('mqttRetain', 'MQTT', '1'), 1);
     for ($i = 0; $i < 100; $i++) {
       // Loop around to permit the library to do its work
       $publish->loop(1);
