@@ -54,7 +54,7 @@ function MQTT_remove() {
     }
     log::add('MQTT','info','Suppression extension');
     $resource_path = realpath(dirname(__FILE__) . '/../resources');
-    passthru('sudo /bin/bash ' . $resource_path . '/install.sh ' . $resource_path . ' > ' . log::getPathToLog('MQTT_dep') . ' 2>&1 &');
+    passthru('sudo /bin/bash ' . $resource_path . '/remove.sh ' . $resource_path . ' > ' . log::getPathToLog('MQTT_dep') . ' 2>&1 &');
     return true;
 }
 
