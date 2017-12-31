@@ -206,14 +206,14 @@ class MQTT extends eqLogic {
     }
   }
 
-  public static function publishMosquitto($_subject, $_message) {
+  public static function publishMosquitto($_subject, $_message, $_retain) {
     log::add('MQTT', 'debug', 'Envoi du message ' . $_message . ' vers ' . $_subject);
     $publish = new Mosquitto\Client(config::byKey('mqttId', 'MQTT', 'Jeedom') . '_pub');
     if (config::byKey('mqttUser', 'MQTT', 'none') != 'none') {
       $publish->setCredentials(config::byKey('mqttUser', 'MQTT'), config::byKey('mqttPass', 'MQTT'));
     }
     $publish->connect(config::byKey('mqttAdress', 'MQTT', '127.0.0.1'), config::byKey('mqttPort', 'MQTT', '1883'), 60);
-    $publish->publish($_subject, $_message, config::byKey('mqttRetain', 'MQTT', '1'), 1);
+    $publish->publish($_subject, $_message, config::byKey('mqttQos', 'MQTT', '1'), $_retain);
     for ($i = 0; $i < 100; $i++) {
       // Loop around to permit the library to do its work
       $publish->loop(1);
@@ -245,7 +245,8 @@ class MQTTCmd extends cmd {
       $request = jeedom::evaluateExpression($request);
       $request = str_replace('\\', '', $request);
       $request = cmd::cmdToValue($request);
-      MQTT::publishMosquitto($topic, $request);
+      $retain = $this->getConfiguration('retain','0');
+      MQTT::publishMosquitto($topic, $request, $retain);
       }
       return true;
     }
