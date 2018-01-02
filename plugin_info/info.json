@@ -7,6 +7,6 @@
 	"category" : "automation protocol",
   "hasDependency" : 1,
   "hasOwnDeamon" : 1,
-	"changelog" : "https://lunarok.github.com/jeedom_mqtt/changelog.html",
-	"documentation" : "https://lunarok.github.com/jeedom_mqtt/"
+	"changelog" : "https://lunarok.github.com/jeedom_MQTT/changelog.html",
+	"documentation" : "https://lunarok.github.com/jeedom_MQTT/"
 }
