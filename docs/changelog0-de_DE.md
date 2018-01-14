@@ -1,13 +1,13 @@
-# Changelog
+# Änderungsprotokoll
 
-En cas d'absence de note dans ce chapitre, les mises à jour ne concernent que la doc, les traductions et des corrections mineures
+Wenn in diesem Kapitel keine Erläuterungen vorhanden sind, wurden Aktualisierungen nur für die Dokumente, Übersetzungen und kleinere Korrekturen vorgenommen
 
-## Janvier 2017
+## Januar 2017
 
 Mise en place du retain en option des commandes actions
 
-MQTT est à nouveau entièrement en mode automatisé avec découverte des topics publiés sur le Mosquitto cible
+MQTT ist wieder vollständig im automatischen Modus mit der Entdeckung von Themen, die auf dem Ziel-Mosquitto veröffentlicht wurden
 
-## Octobre 2017
+## Oktober 2017
 
-Prise en compte de Stretch et PHP7 en natif dans les dépendances
+Berücksichtigung von Stretch und PHP7 nativ in Abhängigkeiten
