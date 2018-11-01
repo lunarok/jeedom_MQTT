@@ -49,17 +49,17 @@ if [[ -d "/etc/php5/" ]]; then
     service apache2 restart
   fi
 else
-  apt-get -y install php7.0-dev
-  if [[ -d "/etc/php/7.0/cli/" && ! `cat /etc/php/7.0/cli/php.ini | grep "mosquitto"` ]]; then
+  apt-get -y install php7.1-dev
+  if [[ -d "/etc/php/7.1/cli/" && ! `cat /etc/php/7.0/cli/php.ini | grep "mosquitto"` ]]; then
     echo "" | pecl install Mosquitto-alpha
     echo 80 > /tmp/mqtt_dep
     echo "extension=mosquitto.so" | tee -a /etc/php/7.0/cli/php.ini
   fi
-  if [[ -d "/etc/php/7.0/fpm/" && ! `cat /etc/php/7.0/fpm/php.ini | grep "mosquitto"` ]]; then
+  if [[ -d "/etc/php/7.1/fpm/" && ! `cat /etc/php/7.0/fpm/php.ini | grep "mosquitto"` ]]; then
     echo "extension=mosquitto.so" | tee -a /etc/php/7.0/fpm/php.ini
     service php5-fpm restart
   fi
-  if [[ -d "/etc/php/7.0/apache2/" && ! `cat /etc/php/7.0/apache2/php.ini | grep "mosquitto"` ]]; then
+  if [[ -d "/etc/php/7.1/apache2/" && ! `cat /etc/php/7.0/apache2/php.ini | grep "mosquitto"` ]]; then
     echo "extension=mosquitto.so" | tee -a /etc/php/7.0/apache2/php.ini
     rm /tmp/mqtt_dep
     echo "Fin installation des dépendances"
