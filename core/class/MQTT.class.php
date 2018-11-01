@@ -81,12 +81,10 @@ class MQTT extends eqLogic {
     return $return;
   }
 
-  public static function dependancy_install() {
-    log::add('MQTT','info','Installation des dépéndances');
-    $resource_path = realpath(dirname(__FILE__) . '/../../resources');
-    passthru('sudo /bin/bash ' . $resource_path . '/install.sh ' . $resource_path . ' > ' . log::getPathToLog('MQTT_dep') . ' 2>&1 &');
-    return true;
-  }
+      public static function dependancy_install() {
+        log::remove(__CLASS__ . '_dep');
+        return array('script' => dirname(__FILE__) . '/../../resources/install.sh ' . jeedom::getTmpFolder('MQTT') . '/dependance', 'log' => log::getPathToLog(__CLASS__ . '_dep'));
+    }
 
   public static function daemon() {
     log::add('MQTT', 'info', 'Paramètres utilisés, Host : ' . config::byKey('mqttAdress', 'MQTT', '127.0.0.1') . ', Port : ' . config::byKey('mqttPort', 'MQTT', '1883') . ', ID : ' . config::byKey('mqttId', 'MQTT', 'Jeedom'));
