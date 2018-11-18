@@ -227,7 +227,7 @@ $eqLogics = eqLogic::byType('MQTT');
 
 <script>
 $( "#sel_icon" ).change(function(){
-  var text = 'plugins/MQTT/doc/images/node_' + $("#sel_icon").val() + '.png';
+  var text = 'plugins/MQTT/plugin_info/node_' + $("#sel_icon").val() + '.png';
   //$("#icon_visu").attr('src',text);
   document.icon_visu.src=text;
 });
