@@ -66,10 +66,10 @@ function addCmdToTable(_cmd) {
 		tr += '</td>';
 		tr += '<td>';//7
 		if (is_numeric(_cmd.id)) {
-			tr += '<a class="btn btn-default btn-xs cmdAction" data-action="configure"><i class="fa fa-cogs"></i></a> ';
-			tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fa fa-rss"></i> {{Tester}}</a>';
+			tr += '<a class="btn btn-default btn-xs cmdAction" data-action="configure"><i class="fas fa-cogs"></i></a> ';
+			tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fas fa-rss"></i> {{Tester}}</a>';
 		}
-		tr += '<i class="fa fa-minus-circle cmdAction cursor" data-action="remove"></i></td>';
+		tr += '<i class="fas fa-minus-circle cmdAction cursor" data-action="remove"></i></td>';
 		tr += '</tr>';
 		$('#table_cmd tbody').append(tr);
 		$('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');
@@ -87,7 +87,7 @@ function addCmdToTable(_cmd) {
 		tr += '<td>';//2
 		tr += '<div class="row">';
 		tr += '<div class="col-lg-6">';
-		tr += '<a class="cmdAction btn btn-default btn-sm" data-l1key="chooseIcon"><i class="fa fa-flag"></i> Icone</a>';
+		tr += '<a class="cmdAction btn btn-default btn-sm" data-l1key="chooseIcon"><i class="fas fa-flag"></i> Icone</a>';
 		tr += '<span class="cmdAttr" data-l1key="display" data-l2key="icon" style="margin-left : 10px;"></span>';
 		tr += '</div>';
 		tr += '<div class="col-lg-6">';
@@ -108,7 +108,7 @@ function addCmdToTable(_cmd) {
         tr += '</td>';
 		tr += '<td>';//5
 		tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="request" style="height : 33px;" ' + disabled + ' placeholder="{{Payload}}">';
-		tr += '<a class="btn btn-default btn-sm cursor listEquipementInfo" data-input="request" style="margin-left : 5px;"><i class="fa fa-list-alt "></i> {{Rechercher équipement}}</a>';
+		tr += '<a class="btn btn-default btn-sm cursor listEquipementInfo" data-input="request" style="margin-left : 5px;"><i class="fas fa-list-alt "></i> {{Rechercher équipement}}</a>';
 		tr +='</select></span>';
 		tr += '</td><td>';//6
 		tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isVisible" checked/>{{Afficher}}</label></span><br> ';
@@ -116,10 +116,10 @@ function addCmdToTable(_cmd) {
 		tr += '</td>';
 		tr += '<td>';//7
 		if (is_numeric(_cmd.id)) {
-			tr += '<a class="btn btn-default btn-xs cmdAction" data-action="configure"><i class="fa fa-cogs"></i></a> ';
-			tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fa fa-rss"></i> {{Tester}}</a>';
+			tr += '<a class="btn btn-default btn-xs cmdAction" data-action="configure"><i class="fas fa-cogs"></i></a> ';
+			tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fas fa-rss"></i> {{Tester}}</a>';
 		}
-		tr += '<i class="fa fa-minus-circle pull-right cmdAction cursor" data-action="remove"></i></td>';
+		tr += '<i class="fas fa-minus-circle pull-right cmdAction cursor" data-action="remove"></i></td>';
 		tr += '</tr>';
 
 		$('#table_cmd tbody').append(tr);
