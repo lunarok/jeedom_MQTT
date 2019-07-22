@@ -4,7 +4,7 @@
 	"description" : "Plugin permettant de communiquer en protocole MQTT. Le plugin se base sur le broker Mosquitto, permettant donc d'être à la fois broker pour des clients mais aussi client d'un broker existant (bridge)Le plugin génère automatiquement des équipements sur les topics créés.",
 	"licence" : "AGPL",
 	"author" : "lunarok",
-	"require" : "2.4",
+	"require" : "3.3.24",
 	"category" : "automation protocol",
 	"language" : ["fr_FR","en_US"],
 	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"],
