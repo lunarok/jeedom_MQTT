@@ -14,6 +14,76 @@
 * You should have received a copy of the GNU General Public License
 * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
 */
+$("#butCol").click(function(){
+  $("#hidCol").toggle("slow");
+  document.getElementById("listCol").classList.toggle('col-lg-12');
+  document.getElementById("listCol").classList.toggle('col-lg-10');
+});
+
+$(".li_eqLogic").on('click', function (event) {
+  if (event.ctrlKey) {
+    var type = $('body').attr('data-page')
+    var url = '/index.php?v=d&m='+type+'&p='+type+'&id='+$(this).attr('data-eqlogic_id')
+    window.open(url).focus()
+  } else {
+    jeedom.eqLogic.cache.getCmd = Array();
+    if ($('.eqLogicThumbnailDisplay').html() != undefined) {
+      $('.eqLogicThumbnailDisplay').hide();
+    }
+    $('.eqLogic').hide();
+    if ('function' == typeof (prePrintEqLogic)) {
+      prePrintEqLogic($(this).attr('data-eqLogic_id'));
+    }
+    if (isset($(this).attr('data-eqLogic_type')) && isset($('.' + $(this).attr('data-eqLogic_type')))) {
+      $('.' + $(this).attr('data-eqLogic_type')).show();
+    } else {
+      $('.eqLogic').show();
+    }
+    $(this).addClass('active');
+    $('.nav-tabs a:not(.eqLogicAction)').first().click()
+    $.showLoading()
+    jeedom.eqLogic.print({
+      type: isset($(this).attr('data-eqLogic_type')) ? $(this).attr('data-eqLogic_type') : eqType,
+      id: $(this).attr('data-eqLogic_id'),
+      status : 1,
+      error: function (error) {
+        $.hideLoading();
+        $('#div_alert').showAlert({message: error.message, level: 'danger'});
+      },
+      success: function (data) {
+        $('body .eqLogicAttr').value('');
+        if(isset(data) && isset(data.timeout) && data.timeout == 0){
+          data.timeout = '';
+        }
+        $('body').setValues(data, '.eqLogicAttr');
+        if ('function' == typeof (printEqLogic)) {
+          printEqLogic(data);
+        }
+        if ('function' == typeof (addCmdToTable)) {
+          $('.cmd').remove();
+          for (var i in data.cmd) {
+            addCmdToTable(data.cmd[i]);
+          }
+        }
+        $('body').delegate('.cmd .cmdAttr[data-l1key=type]', 'change', function () {
+          jeedom.cmd.changeType($(this).closest('.cmd'));
+        });
+
+        $('body').delegate('.cmd .cmdAttr[data-l1key=subType]', 'change', function () {
+          jeedom.cmd.changeSubType($(this).closest('.cmd'));
+        });
+        addOrUpdateUrl('id',data.id);
+        $.hideLoading();
+        modifyWithoutSave = false;
+        setTimeout(function(){
+          modifyWithoutSave = false;
+        },1000)
+      }
+    });
+  }
+  return false;
+});
+
 $("#table_cmd").delegate(".listEquipementInfo", 'click', function () {
     var el = $(this);
     jeedom.cmd.getSelectModal({cmd: {type: 'info'}}, function (result) {
@@ -32,7 +102,75 @@ $('#bt_healthMQTT').on('click', function () {
 	$('#md_modal').load('index.php?v=d&plugin=MQTT&modal=health').dialog('open');
 });
 
-$("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
+$("#butCol").click(function(){
+  $("#hidCol").toggle("slow");
+  document.getElementById("listCol").classList.toggle('col-lg-12');
+  document.getElementById("listCol").classList.toggle('col-lg-10');
+});
+
+$(".li_eqLogic").on('click', function (event) {
+  if (event.ctrlKey) {
+    var type = $('body').attr('data-page')
+    var url = '/index.php?v=d&m='+type+'&p='+type+'&id='+$(this).attr('data-eqlogic_id')
+    window.open(url).focus()
+  } else {
+    jeedom.eqLogic.cache.getCmd = Array();
+    if ($('.eqLogicThumbnailDisplay').html() != undefined) {
+      $('.eqLogicThumbnailDisplay').hide();
+    }
+    $('.eqLogic').hide();
+    if ('function' == typeof (prePrintEqLogic)) {
+      prePrintEqLogic($(this).attr('data-eqLogic_id'));
+    }
+    if (isset($(this).attr('data-eqLogic_type')) && isset($('.' + $(this).attr('data-eqLogic_type')))) {
+      $('.' + $(this).attr('data-eqLogic_type')).show();
+    } else {
+      $('.eqLogic').show();
+    }
+    $(this).addClass('active');
+    $('.nav-tabs a:not(.eqLogicAction)').first().click()
+    $.showLoading()
+    jeedom.eqLogic.print({
+      type: isset($(this).attr('data-eqLogic_type')) ? $(this).attr('data-eqLogic_type') : eqType,
+      id: $(this).attr('data-eqLogic_id'),
+      status : 1,
+      error: function (error) {
+        $.hideLoading();
+        $('#div_alert').showAlert({message: error.message, level: 'danger'});
+      },
+      success: function (data) {
+        $('body .eqLogicAttr').value('');
+        if(isset(data) && isset(data.timeout) && data.timeout == 0){
+          data.timeout = '';
+        }
+        $('body').setValues(data, '.eqLogicAttr');
+        if ('function' == typeof (printEqLogic)) {
+          printEqLogic(data);
+        }
+        if ('function' == typeof (addCmdToTable)) {
+          $('.cmd').remove();
+          for (var i in data.cmd) {
+            addCmdToTable(data.cmd[i]);
+          }
+        }
+        $('body').delegate('.cmd .cmdAttr[data-l1key=type]', 'change', function () {
+          jeedom.cmd.changeType($(this).closest('.cmd'));
+        });
+
+        $('body').delegate('.cmd .cmdAttr[data-l1key=subType]', 'change', function () {
+          jeedom.cmd.changeSubType($(this).closest('.cmd'));
+        });
+        addOrUpdateUrl('id',data.id);
+        $.hideLoading();
+        modifyWithoutSave = false;
+        setTimeout(function(){
+          modifyWithoutSave = false;
+        },1000)
+      }
+    });
+  }
+  return false;
+});
 
 function addCmdToTable(_cmd) {
 	if (!isset(_cmd)) {
