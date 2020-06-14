@@ -22,6 +22,11 @@ if [ `lsb_release -i -s` == "Debian" ]; then
     rm /etc/apt/sources.list.d/mosquitto-stretch.list
     cp -r mosquitto-stretch.list /etc/apt/sources.list.d/mosquitto-stretch.list
   fi
+  if [ `lsb_release -c -s` == "buster" ]; then
+    wget http://repo.mosquitto.org/debian/mosquitto-buster.list -O mosquitto-buster.list
+    rm /etc/apt/sources.list.d/mosquitto-buster.list
+    cp -r mosquitto-buster.list /etc/apt/sources.list.d/mosquitto-buster.list
+  fi
 fi
 fi
 echo 10 > /tmp/mqtt_dep
