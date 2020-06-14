@@ -41,7 +41,7 @@ phpv=`php --version | head -n 1 | cut -d " " -f 2 | cut -c 1-3`
 
 apt-get -y install php$phpv-dev
 if [[ -d "/etc/php/$phpv/cli/" && ! `cat /etc/php/$phpv/cli/php.ini | grep "mosquitto"` ]]; then
-  echo "" | pecl install Mosquitto-alpha
+  echo "" | pecl install Mosquitto-beta
   echo 80 > /tmp/mqtt_dep
   echo "extension=mosquitto.so" | tee -a /etc/php/$phpv/cli/php.ini
 fi
