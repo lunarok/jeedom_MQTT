@@ -101,8 +101,17 @@ class MQTT extends eqLogic {
         $client->setCredentials(config::byKey('mqttUser', 'MQTT'), config::byKey('mqttPass', 'MQTT'));
       }
       $client->connect(config::byKey('mqttAdress', 'MQTT', '127.0.0.1'), config::byKey('mqttPort', 'MQTT', '1883'), 60);
-        $client->subscribe(config::byKey('mqttTopic', 'MQTT', '#'), config::byKey('mqttQos', 'MQTT', 1)); // !auto: Subscribe to root topic
-        log::add('MQTT', 'debug', 'Subscribe to topic ' . config::byKey('mqttTopic', 'MQTT', '#'));
+      $topic = config::byKey('mqttTopic', 'MQTT', '#');
+      if (strpos($topic,',') === false) {
+        $client->subscribe($topic, config::byKey('mqttQos', 'MQTT', 1)); // !auto: Subscribe to root topic
+        log::add('MQTT', 'debug', 'Subscribe to topic ' . $topic);
+      } else {
+        $topics = explode(',',$topic);
+        foreach ($topics as $value){
+           $client->subscribe($value, config::byKey('mqttQos', 'MQTT', 1)); // !auto: Subscribe to root topic
+          log::add('MQTT', 'debug', 'Subscribe to topic ' . $value);
+        }
+      }  
       //$client->loopForever();
       while (true) { $client->loop(); }
     }
