@@ -214,6 +214,9 @@ class MQTT extends eqLogic {
   }
 
   public static function publishMosquitto($_id, $_subject, $_message, $_retain) {
+    if ($_message == '') {
+      return;
+    }
     log::add('MQTT', 'debug', 'Envoi du message ' . $_message . ' vers ' . $_subject);
     $publish = new Mosquitto\Client(config::byKey('mqttId', 'MQTT', 'Jeedom') . '_pub_' . $_id);
     if (config::byKey('mqttUser', 'MQTT', 'none') != 'none') {
