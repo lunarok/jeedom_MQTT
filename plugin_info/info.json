@@ -7,7 +7,7 @@
 	"require" : "3.3.24",
 	"category" : "automation protocol",
 	"language" : ["fr_FR","en_US"],
-	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"],
+	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile","v4"],
 	"hasDependency" : 1,
 	"hasOwnDeamon" : 1,
 	"changelog" : "https://lunarok.github.io/jeedom_docs/plugins/mqtt/changelog.html",
