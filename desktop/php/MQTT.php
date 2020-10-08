@@ -46,10 +46,35 @@ $eqLogics = eqLogic::byType('MQTT');
     <div class="eqLogicThumbnailContainer">
       <?php
       foreach ($eqLogics as $eqLogic) {
+        if (!$eqLogic->getIsEnable()) {
+          continue;
+        }
         $opacity = ($eqLogic->getIsEnable()) ? '' : jeedom::getConfiguration('eqLogic:style:noactive');
+        if ($eqLogic->getConfiguration('icone','') == '') {
+          $icone = 'MQTT_icon';
+        } else {
+          $icone = 'node_' . $eqLogic->getConfiguration('icone','');
+        }
         echo '<div class="eqLogicDisplayCard cursor" data-eqLogic_id="' . $eqLogic->getId() . '" style="background-color : #ffffff ; height : 200px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;' . $opacity . '" >';
         echo "<center>";
-        echo '<img src="plugins/MQTT/plugin_info/MQTT_icon.png" height="105" width="95" />';
+        echo '<img src="plugins/MQTT/plugin_info/' . $icone . '.png" height="105" width="95" />';
+        echo "</center>";
+        echo '<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;"><center>' . $eqLogic->getHumanName(true, true) . '</center></span>';
+        echo '</div>';
+      }
+      foreach ($eqLogics as $eqLogic) {
+        if ($eqLogic->getIsEnable()) {
+          continue;
+        }
+        $opacity = ($eqLogic->getIsEnable()) ? '' : jeedom::getConfiguration('eqLogic:style:noactive');
+        if ($eqLogic->getConfiguration('icone','') == '') {
+          $icone = 'MQTT_icon';
+        } else {
+          $icone = 'node_' . $eqLogic->getConfiguration('icone','');
+        }
+        echo '<div class="eqLogicDisplayCard cursor" data-eqLogic_id="' . $eqLogic->getId() . '" style="background-color : #ffffff ; height : 200px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;' . $opacity . '" >';
+        echo "<center>";
+        echo '<img src="plugins/MQTT/plugin_info/' . $icone . '.png" height="105" width="95" />';
         echo "</center>";
         echo '<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;"><center>' . $eqLogic->getHumanName(true, true) . '</center></span>';
         echo '</div>';
@@ -109,13 +134,6 @@ $eqLogics = eqLogic::byType('MQTT');
               <div class="col-sm-8">
                 <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isEnable" checked/>{{Activer}}</label>
                 <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isVisible" checked/>{{Visible}}</label>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="col-sm-3 control-label">{{Type de piles}}</label>
-              <div class="col-sm-3">
-                <input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="battery_type" placeholder="{{Doit être indiqué sous la forme : 3xAA}}"/>
               </div>
             </div>
 
