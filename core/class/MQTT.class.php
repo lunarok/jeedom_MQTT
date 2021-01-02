@@ -156,6 +156,11 @@ class MQTT extends eqLogic {
       $nodeid = implode($topicArray,'/');
       $value = $message->payload;
       $type = 'topic';
+
+      if ($nodeid == "" || $cmdId == "") {
+        log::add('MQTT', 'info', $message->topic . ' est un topic trop court ou incorrect pour un Message texte');
+        return;
+      }
       log::add('MQTT', 'info', 'Message texte : ' . $value . ' pour information : ' . $cmdId . ' sur : ' . $nodeid);
     }
 
