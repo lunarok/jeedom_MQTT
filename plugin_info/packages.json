@@ -1,0 +1,12 @@
+{
+    "apt" : {
+      "php-pear" : {},
+      "lsb-release" : {},
+      "mosquitto" : {},
+      "mosquitto-clients" : {},
+      "mosquitto-dev" : {}
+    },
+    "post-install": {
+		"script":"plugins/mqtthub/resources/install.sh"
+	}
+  }
